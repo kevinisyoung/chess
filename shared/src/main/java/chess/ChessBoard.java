@@ -7,9 +7,10 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessBoard {
+    private ChessPiece[][] chessBoard = new ChessPiece[8][8];
 
     public ChessBoard() {
-        
+        System.out.println(toString());
     }
 
     /**
@@ -19,7 +20,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        throw new RuntimeException("Not implemented");
+        chessBoard[position.getRow()][position.getColumn()] = piece;
     }
 
     /**
@@ -30,7 +31,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        throw new RuntimeException("Not implemented");
+        return chessBoard[position.getRow()][position.getColumn()];
     }
 
     /**
@@ -39,5 +40,39 @@ public class ChessBoard {
      */
     public void resetBoard() {
         throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (int rows = 0; rows < 8; rows++) {
+            output.append("|");
+            for (int cols = 0; cols < 8; cols++) {
+                char pieceChar = ' ';
+                if (chessBoard[rows][cols] == null) {
+                    //do nothing
+                }
+                else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.BISHOP){
+                    pieceChar = 'B';
+                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.KING){
+                    pieceChar = 'K';
+                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.QUEEN){
+                    pieceChar = 'Q';
+                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.KNIGHT){
+                    pieceChar = 'N';
+                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.ROOK){
+                    pieceChar = 'R';
+                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.PAWN){
+                    pieceChar = 'B';
+                }
+                if (chessBoard[rows][cols] != null && chessBoard[rows][cols].getTeamColor() == ChessGame.TeamColor.BLACK){
+                    pieceChar = String.valueOf(pieceChar).toLowerCase().charAt(0);
+                }
+                output.append(pieceChar);
+                output.append("|");
+            }
+            output.append("\n");
+        }
+        return output.toString();
     }
 }
