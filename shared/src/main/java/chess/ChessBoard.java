@@ -45,9 +45,9 @@ public class ChessBoard {
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        for (int rows = 0; rows < 8; rows++) {
+        for (int rows = 7; rows >= 0; rows--) {
             output.append("|");
-            for (int cols = 0; cols < 8; cols++) {
+            for (int cols = 7; cols >= 0; cols--) {
                 char pieceChar = ' ';
                 if (chessBoard[rows][cols] == null) {
                     //do nothing

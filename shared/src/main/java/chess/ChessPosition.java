@@ -7,12 +7,12 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessPosition {
-    private int row;
-    private int column;
+    private int row = 0;
+    private int column = 0;
 
     public ChessPosition(int row, int col) {
-        this.row = 8-row;
-        this.column = 8-col;
+        this.row = row;
+        this.column = col;
     }
 
     /**
@@ -29,5 +29,10 @@ public class ChessPosition {
      */
     public int getColumn() {
         return column;
+    }
+
+    public Boolean isValid() {
+        //its invalid
+        return column <= 8 && column >= 1 && row <= 8 && row >= 1;
     }
 }
