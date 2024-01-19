@@ -20,7 +20,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        chessBoard[position.getRow()][position.getColumn()] = piece;
+        chessBoard[position.getRow()-1][position.getColumn()-1] = piece;
     }
 
     /**
@@ -31,7 +31,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return chessBoard[position.getRow()][position.getColumn()];
+        return chessBoard[position.getRow()-1][position.getColumn()-1];
     }
 
     /**
@@ -45,27 +45,28 @@ public class ChessBoard {
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        for (int rows = 7; rows >= 0; rows--) {
+        for (int rows = 0; rows < 8; rows++) {
             output.append("|");
-            for (int cols = 7; cols >= 0; cols--) {
+            for (int cols = 0; cols < 8; cols++) {
+                ChessPosition tempPos = new ChessPosition(8-rows,cols+1);
                 char pieceChar = ' ';
-                if (chessBoard[rows][cols] == null) {
+                if (getPiece(tempPos) == null) {
                     //do nothing
                 }
-                else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.BISHOP){
+                else if (getPiece(tempPos).getPieceType() == ChessPiece.PieceType.BISHOP){
                     pieceChar = 'B';
-                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.KING){
+                }else if (getPiece(tempPos).getPieceType() == ChessPiece.PieceType.KING){
                     pieceChar = 'K';
-                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.QUEEN){
+                }else if (getPiece(tempPos).getPieceType() == ChessPiece.PieceType.QUEEN){
                     pieceChar = 'Q';
-                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.KNIGHT){
+                }else if (getPiece(tempPos).getPieceType() == ChessPiece.PieceType.KNIGHT){
                     pieceChar = 'N';
-                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.ROOK){
+                }else if (getPiece(tempPos).getPieceType() == ChessPiece.PieceType.ROOK){
                     pieceChar = 'R';
-                }else if (chessBoard[rows][cols].getPieceType() == ChessPiece.PieceType.PAWN){
+                }else if (getPiece(tempPos).getPieceType() == ChessPiece.PieceType.PAWN){
                     pieceChar = 'B';
                 }
-                if (chessBoard[rows][cols] != null && chessBoard[rows][cols].getTeamColor() == ChessGame.TeamColor.BLACK){
+                if (getPiece(tempPos) != null && getPiece(tempPos).getTeamColor() == ChessGame.TeamColor.BLACK){
                     pieceChar = String.valueOf(pieceChar).toLowerCase().charAt(0);
                 }
                 output.append(pieceChar);
