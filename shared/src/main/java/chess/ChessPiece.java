@@ -184,24 +184,24 @@ public class ChessPiece {
             //stright right
             tempPos = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1);
             if (board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() != currPiece.pieceColor){
-                theseMoves.add(new ChessMove(myPosition, tempPos, null));
-                if (tempPos.getRow()==2){
+                if (tempPos.getRow()==1){
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.QUEEN));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.ROOK));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.KNIGHT));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.BISHOP));
                 }
+                else {theseMoves.add(new ChessMove(myPosition, tempPos, null));}
             }
             //stright left
             tempPos = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1);
             if (board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() != currPiece.pieceColor){
-                theseMoves.add(new ChessMove(myPosition, tempPos, null));
-                if (tempPos.getRow()==2){
+                if (tempPos.getRow()==1){
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.QUEEN));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.ROOK));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.KNIGHT));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.BISHOP));
                 }
+                else {theseMoves.add(new ChessMove(myPosition, tempPos, null));}
             }
 
           if (myPosition.getRow() == 7){
