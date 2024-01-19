@@ -73,37 +73,35 @@ public class ChessPiece {
 
     public Collection<ChessMove> calculateDiagonal(ChessBoard board, ChessPosition myPosition) {
         ChessPiece currPiece = board.getPiece(myPosition);
-
         //possible diagonal moves:
-        HashSet<ChessMove> theseMoves = new HashSet<>();
+        ArrayList<ChessMove> theseMoves = new ArrayList<>();
 
         //first is row, second col
         int[][] directions = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
         //calculate diagonal
-
-
-            int currRowIteration = myPosition.getRow() + (1);
-            int currColIteration = myPosition.getColumn() + (1);
-            ChessPosition currPositionIteration = new ChessPosition(currRowIteration, currColIteration);
-            //move in the direction WHILE you still can. once that direction is done, next iteration in for loop.
-            while (currPositionIteration.isValid()) {
-                if (board.getPiece(currPositionIteration) == null) {
-                    //piece can move here, continue moving forward
-                    theseMoves.add(new ChessMove(myPosition,currPositionIteration,null));
-                    currRowIteration += (1);
-                    currColIteration += (1);
-                    currPositionIteration = new ChessPosition(currRowIteration, currColIteration);
-                }
-                else if (board.getPiece(currPositionIteration).getTeamColor() != pieceColor){
-                    theseMoves.add(new ChessMove(myPosition,currPositionIteration,null));
-                    break;
-                }
-                else {
-                    break;
+            for (int i = 0; i < 4; i++){
+                int currRowIteration = myPosition.getRow() + (directions[i][0]);
+                int currColIteration = myPosition.getColumn() + (directions[i][1]);
+                ChessPosition currPositionIteration = new ChessPosition(currRowIteration, currColIteration);
+                //move in the direction WHILE you still can. once that direction is done, next iteration in for loop.
+                while (currPositionIteration.isValid()) {
+                    if (board.getPiece(currPositionIteration) == null) {
+                        //piece can move here, continue moving forward
+                        theseMoves.add(new ChessMove(myPosition,currPositionIteration,null));
+                        currRowIteration += (directions[i][0]);
+                        currColIteration += (directions[i][1]);
+                        currPositionIteration = new ChessPosition(currRowIteration, currColIteration);
+                    }
+                    else if (board.getPiece(currPositionIteration).getTeamColor() != pieceColor){
+                        theseMoves.add(new ChessMove(myPosition,currPositionIteration,null));
+                        break;
+                    }
+                    else {
+                        break;
+                    }
                 }
             }
-
-        return null;
+        return theseMoves;
     }
 
     public Boolean isValid(ChessPosition myPosition) {
