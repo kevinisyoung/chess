@@ -76,7 +76,8 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-
+        chessBoard.addPiece(move.getEndPosition(),chessBoard.getPiece(move.getStartPosition()));
+        chessBoard.addPiece(move.getStartPosition(),null);
     }
 
     /**
@@ -127,7 +128,27 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if (!isInCheck(teamColor)){
+            return false;
+        }
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                //see if any move will get the team out of check. so basically try every move and if one doesn't yield true for isInCheck, then its in checkmate
+                ChessPosition tempPos = new ChessPosition(i+1,j+1);
+                if (chessBoard.getPiece(tempPos) != null && chessBoard.getPiece(tempPos).getTeamColor() != teamColor){
+                    //cycle thru that pieces valid moves and see if any will yield false for isInCheck
+                    var curPieceMoves = chessBoard.getPiece(tempPos).pieceMoves(getBoard(),tempPos);
+                    for (var move : curPieceMoves){
+                        ChessPosition tempStartPos = move.getStartPosition();
+                        ChessPosition tempEndPos = move.getEndPosition();
+
+
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
