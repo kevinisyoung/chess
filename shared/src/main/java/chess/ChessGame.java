@@ -76,8 +76,18 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        chessBoard.addPiece(move.getEndPosition(),chessBoard.getPiece(move.getStartPosition()));
-        chessBoard.addPiece(move.getStartPosition(),null);
+        if (chessBoard.getPiece(move.getStartPosition()) == null){
+            throw new InvalidMoveException();
+        }
+        else if (chessBoard.getPiece(move.getStartPosition()) != null){
+            var possibleMovesForPiece = chessBoard.getPiece(move.getStartPosition()).pieceMoves(chessBoard, move.getStartPosition());
+            if (possibleMovesForPiece.contains(move)) {
+                chessBoard.addPiece(move.getEndPosition(), chessBoard.getPiece(move.getStartPosition()));
+                chessBoard.addPiece(move.getStartPosition(), null);
+            }
+            else throw new InvalidMoveException();
+        }
+
     }
 
     /**
