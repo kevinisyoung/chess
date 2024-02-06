@@ -11,13 +11,9 @@ import java.util.Objects;
  */
 public class ChessGame {
     private ChessGame.TeamColor curTeamTurn = TeamColor.WHITE;
-    private ChessBoard chessBoard;
+    private ChessBoard chessBoard = new ChessBoard();
 
-    public ChessGame() {
-
-
-
-    }
+    public ChessGame() {}
 
     /**
      * @return Which team's turn it is
@@ -64,7 +60,12 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        if (chessBoard.getPiece(startPosition) == null){
+            return null;
+        }
+        else {
+        return null;
+        }
     }
 
     /**
@@ -84,7 +85,19 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPosition kingPosition;
+        //find the piece of the teamcolor
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                ChessPosition tempPos = new ChessPosition(i+1,j+1);
+                if (chessBoard.getPiece(tempPos).getPieceType() == ChessPiece.PieceType.KING && chessBoard.getPiece(tempPos).getTeamColor() == teamColor){
+                    //king found
+                    kingPosition = tempPos;
+                }
+            }
+        }
+        System.out.println("king found");
+        return false;
     }
 
     /**
