@@ -183,7 +183,7 @@ public class ChessPiece {
             }
             //stright right
             tempPos = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1);
-            if (board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() != currPiece.pieceColor){
+            if (tempPos.isValid() && board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() != currPiece.pieceColor){
                 if (tempPos.getRow()==1){
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.QUEEN));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.ROOK));
@@ -194,7 +194,7 @@ public class ChessPiece {
             }
             //stright left
             tempPos = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1);
-            if (board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() != currPiece.pieceColor){
+            if (tempPos.isValid() && board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() != currPiece.pieceColor){
                 if (tempPos.getRow()==1){
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.QUEEN));
                     theseMoves.add(new ChessMove(myPosition,tempPos,PieceType.ROOK));

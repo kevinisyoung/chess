@@ -80,10 +80,19 @@ public class ChessGame {
             throw new InvalidMoveException();
         }
         else if (chessBoard.getPiece(move.getStartPosition()) != null){
+            if (chessBoard.getPiece(move.getStartPosition()).getTeamColor() != curTeamTurn){
+                throw new InvalidMoveException();
+            }
             var possibleMovesForPiece = chessBoard.getPiece(move.getStartPosition()).pieceMoves(chessBoard, move.getStartPosition());
             if (possibleMovesForPiece.contains(move)) {
                 chessBoard.addPiece(move.getEndPosition(), chessBoard.getPiece(move.getStartPosition()));
                 chessBoard.addPiece(move.getStartPosition(), null);
+                if (curTeamTurn == TeamColor.BLACK){
+                    curTeamTurn = TeamColor.WHITE;
+                }
+                else {
+                    curTeamTurn = TeamColor.BLACK;
+                }
             }
             else throw new InvalidMoveException();
         }
