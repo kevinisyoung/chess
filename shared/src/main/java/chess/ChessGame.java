@@ -186,20 +186,32 @@ public class ChessGame {
             for (int j = 0; j < 8; j++){
                 //see if any move will get the team out of check. so basically try every move and if one doesn't yield true for isInCheck, then its in checkmate
                 ChessPosition tempPos = new ChessPosition(i+1,j+1);
-                if (chessBoard.getPiece(tempPos) != null && chessBoard.getPiece(tempPos).getTeamColor() != teamColor){
+                if (chessBoard.getPiece(tempPos) != null && chessBoard.getPiece(tempPos).getTeamColor() == teamColor){
                     //cycle thru that pieces valid moves and see if any will yield false for isInCheck
-                    var curPieceMoves = chessBoard.getPiece(tempPos).pieceMoves(getBoard(),tempPos);
-                    for (var move : curPieceMoves){
+                    var validMoves = validMoves(tempPos);
+                    for (var move : validMoves){
                         ChessPosition tempStartPos = move.getStartPosition();
                         ChessPosition tempEndPos = move.getEndPosition();
 
-
+                        ChessPiece tempCapturePiece = null;
+                        //perform a "soft" move to see if it leaves king in danger. if it does, not a valid move, sorry bub
+                        if (chessBoard.getPiece(tempEndPos) != null){
+                            tempCapturePiece = chessBoard.getPiece(tempEndPos);
+                        }
+                        chessBoard.addPiece(tempEndPos, chessBoard.getPiece(tempStartPos));
+                        chessBoard.addPiece(tempStartPos, null);
+                        if (!isInCheck(chessBoard.getPiece(tempEndPos).getTeamColor())){
+                            //yo this is a valid move yo!!!!!
+                            return false;
+                        }
+                        chessBoard.addPiece(tempStartPos, chessBoard.getPiece(tempEndPos));
+                        chessBoard.addPiece(move.getEndPosition(), tempCapturePiece);
                     }
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
