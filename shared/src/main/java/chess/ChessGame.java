@@ -65,7 +65,35 @@ public class ChessGame {
             return null;
         }
         else {
-        return null;
+            var validMoves = new HashSet<ChessMove>();
+            //if it's in check and the move doesn't pull out of check, it's not valid
+            //a piece has a valid move if:
+            //the move does not put king into check
+            //the move does not leave king in check
+            //so if a bishop would put a king in check by moving, it's not a valid move
+            //this is from the bishops perspective just remember that
+            //check if in check
+            //then if not in check just add like most if not all moves to validmoves if it doesn't put the king into check
+            //if (isInCheck(chessBoard.getPiece(startPosition).getTeamColor())){
+            //that color king is in check. now for whatever piece is passed into valid moves, EG the bishop, calculate what moves are valid for him.
+            for (var move : chessBoard.getPiece(startPosition).pieceMoves(chessBoard,startPosition)){
+                ChessPosition tempStartPos = move.getStartPosition();
+                ChessPosition tempEndPos = move.getEndPosition();
+                ChessPiece tempCapturePiece = null;
+                //perform a "soft" move to see if it leaves king in danger. if it does, not a valid move, sorry bub
+                if (chessBoard.getPiece(tempEndPos) != null){
+                    tempCapturePiece = chessBoard.getPiece(tempEndPos);
+                }
+                chessBoard.addPiece(tempEndPos, chessBoard.getPiece(tempStartPos));
+                chessBoard.addPiece(tempStartPos, null);
+                if (!isInCheck(chessBoard.getPiece(tempEndPos).getTeamColor())){
+                    //yo this is a valid move yo!!!!!
+                    validMoves.add(move);
+                }
+                chessBoard.addPiece(tempStartPos, chessBoard.getPiece(tempEndPos));
+                chessBoard.addPiece(move.getEndPosition(), tempCapturePiece);
+            }
+            return validMoves;
         }
     }
 
@@ -79,12 +107,12 @@ public class ChessGame {
         if (chessBoard.getPiece(move.getStartPosition()) == null){
             throw new InvalidMoveException();
         }
-        else if (chessBoard.getPiece(move.getStartPosition()) != null){
+        else {
             if (chessBoard.getPiece(move.getStartPosition()).getTeamColor() != curTeamTurn){
                 throw new InvalidMoveException();
             }
-            var possibleMovesForPiece = chessBoard.getPiece(move.getStartPosition()).pieceMoves(chessBoard, move.getStartPosition());
-            if (possibleMovesForPiece.contains(move)) {
+            var validMoves = validMoves(move.getStartPosition());
+            if (validMoves.contains(move)) {
                 chessBoard.addPiece(move.getEndPosition(), chessBoard.getPiece(move.getStartPosition()));
                 chessBoard.addPiece(move.getStartPosition(), null);
                 if (curTeamTurn == TeamColor.BLACK){
