@@ -1,14 +1,12 @@
 package service;
 
 import dataAccess.GameDAO;
-import dataAccess.ImplGameDAO;
-import dataAccess.ImplUserDAO;
-import dataAccess.UserDAO;
+import dataAccess.MemoryGameDAO;
 
 public class GameService {
     GameDAO DAO;
     public GameService(){
-        DAO = new ImplGameDAO();
+        DAO = new MemoryGameDAO();
     }
     public void clearAll(){
         DAO.clearAll();

@@ -33,7 +33,7 @@ public class ServerHandlers {
             res.status(200);
             return new Gson().toJson("");
         } catch (Exception e){
-            res.status(500);
+            res.status(400);
             return new Gson().toJson(e.getMessage());
         }
     }

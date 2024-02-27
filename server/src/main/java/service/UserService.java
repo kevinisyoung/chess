@@ -1,6 +1,6 @@
 package service;
 
-import dataAccess.ImplUserDAO;
+import dataAccess.MemoryUserDAO;
 import dataAccess.UserDAO;
 import model.AuthData;
 import model.UserData;
@@ -10,10 +10,11 @@ public class UserService {
     UserDAO DAO;
 
     public UserService(){
-        DAO = new ImplUserDAO();
+        DAO = new MemoryUserDAO();
     }
     public AuthData register(UserData user) {
         //verify no username exists in DB
+        DAO.getUser(user.username());
 
         AuthData responseData = new AuthData("AUTHTOKEN_HERE",user.username());
 

@@ -1,14 +1,12 @@
 package service;
 
 import dataAccess.AuthDAO;
-import dataAccess.ImplAuthDAO;
-import dataAccess.ImplUserDAO;
-import dataAccess.UserDAO;
+import dataAccess.MemoryAuthDAO;
 
 public class AuthService {
     AuthDAO DAO;
     public AuthService(){
-         DAO = new ImplAuthDAO();
+         DAO = new MemoryAuthDAO();
     }
 
     public String generateAuth(){
@@ -18,4 +16,6 @@ public class AuthService {
     public void clearAll(){
         DAO.clearAll();
     }
+
+//    public void create
 }

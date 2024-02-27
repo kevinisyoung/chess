@@ -3,6 +3,11 @@ package dataAccess;
 public interface GameDAO {
 
     public void clearAll();
+    public void createGame();
+    public void getGame();
+    public void listGames();
+    public void updateGame();
+
 }
 /*    For the most part, the methods on your DAO classes will be CRUD operations that:
 
