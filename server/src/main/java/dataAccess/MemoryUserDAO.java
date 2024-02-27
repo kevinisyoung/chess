@@ -1,6 +1,7 @@
 package dataAccess;
 
 import model.AuthData;
+import model.UserData;
 
 import java.util.HashSet;
 
@@ -14,12 +15,13 @@ public class MemoryUserDAO implements UserDAO{
     }
 
     @Override
-    public void getUser(String username) {
+    public UserData getUser(String username) {
         System.out.println("GETUSER");
+        return null;
     }
 
     @Override
-    public void insertUser() {
+    public void insertUser(UserData user) {
         System.out.println("INSERTUSER");
     }
 }

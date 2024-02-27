@@ -1,6 +1,12 @@
 package server;
 
+import Exceptions.UserAlreadyExistsException;
 import com.google.gson.Gson;
+import dataAccess.AuthDAO;
+import model.AuthData;
+import model.UserData;
+import org.eclipse.jetty.server.Authentication;
+import returnRecords.AuthResponse;
 import service.AuthService;
 import service.GameService;
 import service.UserService;
@@ -9,10 +15,12 @@ import spark.Request;
 import spark.Response;
 
 public class ServerHandlers {
-    private final UserService userService;
-    private final GameService gameService;
-    private final AuthService authService;
+    UserService userService;
+    GameService gameService;
+    AuthService authService;
+    Gson gson;
     public ServerHandlers(){
+        gson = new Gson();
         userService = new UserService();
         gameService = new GameService();
         authService = new AuthService();
@@ -31,13 +39,32 @@ public class ServerHandlers {
             authService.clearAll();
 
             res.status(200);
-            return new Gson().toJson("");
+            return new Gson().toJson(new Object());
         } catch (Exception e){
             res.status(400);
             return new Gson().toJson(e.getMessage());
         }
     }
     public Object registerHandler(Request req, Response res){
+        System.out.println("registerHandler Called");
+        UserData requestData;
+        try {
+            requestData = gson.fromJson(req.body(), UserData.class);
+            if (requestData.username() == null || requestData.password() == null || requestData.email() == null){
+                res.status(400);
+                return new Gson().toJson(new Object());
+            }
+            //success
+            AuthData returnedAuthData = userService.register(requestData);
+            res.status(200);
+            return new Gson().toJson(new AuthResponse(returnedAuthData.username(), returnedAuthData.authToken()));
+        } catch (UserAlreadyExistsException e){
+            res.status(403);
+            return new Gson().toJson(e.getMessage());
+        } catch (Exception e){
+            res.status(500);
+            return new Gson().toJson(e.getMessage());
+        }
 
         /*
         Register a user
@@ -46,7 +73,7 @@ public class ServerHandlers {
             No authorization authToken is required to call this endpoint.
          */
 
-        return null;
+//        return null;
     }
     public Object loginHandler(Request req, Response res){
         /*

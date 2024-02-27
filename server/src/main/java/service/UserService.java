@@ -1,9 +1,12 @@
 package service;
 
+import Exceptions.UserAlreadyExistsException;
 import dataAccess.MemoryUserDAO;
 import dataAccess.UserDAO;
 import model.AuthData;
 import model.UserData;
+import org.eclipse.jetty.server.Authentication;
+import server.ServerHandlers;
 
 public class UserService {
 
@@ -12,9 +15,14 @@ public class UserService {
     public UserService(){
         DAO = new MemoryUserDAO();
     }
-    public AuthData register(UserData user) {
+    public AuthData register(UserData user) throws UserAlreadyExistsException {
         //verify no username exists in DB
-        DAO.getUser(user.username());
+        if (DAO.getUser(user.username()) != null){
+            throw new UserAlreadyExistsException("Error: already taken");
+        }
+
+        DAO.insertUser(user);
+
 
         AuthData responseData = new AuthData("AUTHTOKEN_HERE",user.username());
 

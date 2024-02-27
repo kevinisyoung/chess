@@ -1,9 +1,11 @@
 package dataAccess;
 
+import model.UserData;
+
 public interface UserDAO {
 
     public void clearAll();
-    public void getUser(String username);
-    public void insertUser();
+    public UserData getUser(String username);
+    public void insertUser(UserData user);
 
 }
