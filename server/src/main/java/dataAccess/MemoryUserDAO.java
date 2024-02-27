@@ -1,8 +1,15 @@
 package dataAccess;
 
+import model.AuthData;
+
+import java.util.HashSet;
+
 public class MemoryUserDAO implements UserDAO{
+
+    HashSet<AuthData> userDatabase = new HashSet<AuthData>();
     @Override
     public void clearAll() {
+        userDatabase.clear();
         System.out.println("USER CLEARED");
     }
 

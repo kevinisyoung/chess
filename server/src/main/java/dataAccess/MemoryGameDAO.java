@@ -1,8 +1,15 @@
 package dataAccess;
 
+import model.AuthData;
+
+import java.util.HashSet;
+
 public class MemoryGameDAO implements GameDAO{
+
+    HashSet<AuthData> gameDatabase = new HashSet<AuthData>();
     @Override
     public void clearAll() {
+        gameDatabase.clear();
         System.out.println("GAME CLEARED");
     }
 
