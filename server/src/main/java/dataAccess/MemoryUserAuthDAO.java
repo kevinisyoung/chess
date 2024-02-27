@@ -8,6 +8,13 @@ import java.util.HashSet;
 public class MemoryUserAuthDAO implements UserAuthDAO{
 
     HashSet<AuthData> authDatabase = new HashSet<AuthData>();
+    HashSet<UserData> userDatabase = new HashSet<UserData>();
+
+
+    @Override
+    public void insertUser(UserData user) {
+        userDatabase.add(user);
+    }
 
     @Override
     public void getAuth() {
@@ -15,8 +22,8 @@ public class MemoryUserAuthDAO implements UserAuthDAO{
     }
 
     @Override
-    public void insertAuth(String auth) {
-        System.out.println("INSERTAUTH");
+    public void insertAuth(String username, String authToken) {
+        authDatabase.add(new AuthData(authToken,username));
     }
 
     @Override
@@ -32,12 +39,12 @@ public class MemoryUserAuthDAO implements UserAuthDAO{
 
     @Override
     public UserData getUser(String username) {
+        for (UserData user : userDatabase){
+            if (user.username().equals(username)){
+                return user;
+            }
+        }
         return null;
-    }
-
-    @Override
-    public void insertUser(UserData user) {
-
     }
 
 }

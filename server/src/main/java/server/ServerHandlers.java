@@ -4,8 +4,7 @@ import Exceptions.UserAlreadyExistsException;
 import com.google.gson.Gson;
 import model.AuthData;
 import model.UserData;
-import org.eclipse.jetty.server.Authentication;
-import returnRecords.AuthResponse;
+import additionalRecords.AuthResponse;
 import service.GameService;
 import service.UserAuthService;
 
@@ -71,6 +70,8 @@ public class ServerHandlers {
 //        return null;
     }
     public Object loginHandler(Request req, Response res){
+
+
         /*
         Log in a user
             If successful, an authorization authToken is returned.

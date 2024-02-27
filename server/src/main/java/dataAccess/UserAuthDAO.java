@@ -5,7 +5,7 @@ import model.UserData;
 public interface UserAuthDAO {
 
     public void getAuth();
-    public void insertAuth(String username);
+    public void insertAuth(String username, String authToken);
     public void removeAuth();
     public void clearAll();
 

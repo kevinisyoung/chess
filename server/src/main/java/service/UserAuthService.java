@@ -7,6 +7,8 @@ import dataAccess.UserAuthDAO;
 import model.AuthData;
 import model.UserData;
 
+import java.util.UUID;
+
 public class UserAuthService {
 
     UserAuthDAO DAO;
@@ -22,21 +24,16 @@ public class UserAuthService {
         }
 
         DAO.insertUser(user);
-
         //have auth dao create auth token and insert that
-
-
-        AuthData responseData = new AuthData("AUTHTOKEN_HERE",user.username());
-
-        return responseData;
+        return login(user);
     }
     public AuthData login(UserData user) {
         //create new authToken here
         //insert that authToken into DB using AuthDAO
         //create new AuthData using that authtoken
-
-        AuthData responseData = new AuthData("AUTHTOKEN_HERE",user.username());
-        return null;
+        String generatedAuth = generateAuth();
+        DAO.insertAuth(user.username(),generatedAuth);
+        return new AuthData(generatedAuth, user.username());
     }
     public void logout(UserData user) {}
 
@@ -46,7 +43,7 @@ public class UserAuthService {
 
 
     public String generateAuth(){
-        return "AUTH HERE";
+        return UUID.randomUUID().toString();
     }
 
 
