@@ -1,6 +1,8 @@
 package dataAccess;
 
-public class GameDAO {
+public interface GameDAO {
+
+    public void clearAll();
 }
 /*    For the most part, the methods on your DAO classes will be CRUD operations that:
 

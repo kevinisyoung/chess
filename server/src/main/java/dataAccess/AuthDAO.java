@@ -1,4 +1,9 @@
 package dataAccess;
 
-public class AuthDAO {
+import java.util.Map;
+
+public interface AuthDAO {
+
+
+    public void clearAll();
 }

@@ -1,4 +1,6 @@
 package dataAccess;
 
-public class UserDAO {
+public interface UserDAO {
+
+    public void clearAll();
 }

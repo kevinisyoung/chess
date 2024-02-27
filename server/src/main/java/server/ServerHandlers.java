@@ -1,17 +1,54 @@
 package server;
 
-public class ServerHandlers {
+import com.google.gson.Gson;
+import service.AuthService;
+import service.GameService;
+import service.UserService;
 
-    public static Object registerHandler(){
+import spark.Request;
+import spark.Response;
+
+public class ServerHandlers {
+    private final UserService userService;
+    private final GameService gameService;
+    private final AuthService authService;
+    public ServerHandlers(){
+        userService = new UserService();
+        gameService = new GameService();
+        authService = new AuthService();
+    }
+
+    public Object clearAllHandler(Request req, Response res){
+        /*
+        Clear ALL data from the database
+               This includes users and all game data.
+               No authorization authToken is required.
+         */
+        System.out.println("clearAllHandler Called");
+        try {
+            userService.clearAll();
+            gameService.clearAll();
+            authService.clearAll();
+
+            res.status(200);
+            return new Gson().toJson("");
+        } catch (Exception e){
+            res.status(500);
+            return new Gson().toJson(e.getMessage());
+        }
+    }
+    public Object registerHandler(Request req, Response res){
+
         /*
         Register a user
             If successful, an authorization authToken is returned.
             You may use the authToken with future requests that require authorization.
             No authorization authToken is required to call this endpoint.
          */
+
         return null;
     }
-    public static Object loginHandler(){
+    public Object loginHandler(Request req, Response res){
         /*
         Log in a user
             If successful, an authorization authToken is returned.
@@ -20,14 +57,14 @@ public class ServerHandlers {
          */
         return null;
     }
-    public static Object logoutHandler(){
+    public Object logoutHandler(Request req, Response res){
         /*
         Logs out an authenticated user
             An authToken is required to call this endpoint.
          */
         return null;
     }
-    public static Object listGamesHandler(){
+    public Object listGamesHandler(Request req, Response res){
         /*
         Lists all the games in the database
             This API does not take a request body.
@@ -36,7 +73,7 @@ public class ServerHandlers {
          */
         return null;
     }
-    public static Object createGameHandler(){
+    public Object createGameHandler(Request req, Response res){
         /*
         Create a new Chess Game
             The request body must contain a name for the game.
@@ -46,7 +83,7 @@ public class ServerHandlers {
          */
         return null;
     }
-    public static Object joinGameHandler(){
+    public Object joinGameHandler(Request req, Response res){
         /*
         Join a Chess Game
             The request body must contain the game ID.
@@ -55,15 +92,6 @@ public class ServerHandlers {
          */
         return null;
     }
-    public static Object clearAllHandler(){
-        /*
-        Clear ALL data from the database
-               This includes users and all game data.
-               No authorization authToken is required.
-         */
-        return null;
-    }
-
 }
 
 
