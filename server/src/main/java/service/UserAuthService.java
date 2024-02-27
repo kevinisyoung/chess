@@ -1,19 +1,19 @@
 package service;
 
 import Exceptions.UserAlreadyExistsException;
-import dataAccess.MemoryUserDAO;
-import dataAccess.UserDAO;
+import dataAccess.MemoryUserAuthDAO;
+import dataAccess.UserAuthDAO;
+
 import model.AuthData;
 import model.UserData;
-import org.eclipse.jetty.server.Authentication;
-import server.ServerHandlers;
 
-public class UserService {
+public class UserAuthService {
 
-    UserDAO DAO;
+    UserAuthDAO DAO;
 
-    public UserService(){
-        DAO = new MemoryUserDAO();
+
+    public UserAuthService(){
+        DAO = new MemoryUserAuthDAO();
     }
     public AuthData register(UserData user) throws UserAlreadyExistsException {
         //verify no username exists in DB
@@ -22,6 +22,8 @@ public class UserService {
         }
 
         DAO.insertUser(user);
+
+        //have auth dao create auth token and insert that
 
 
         AuthData responseData = new AuthData("AUTHTOKEN_HERE",user.username());
@@ -41,5 +43,11 @@ public class UserService {
     public void clearAll(){
         DAO.clearAll();
     }
+
+
+    public String generateAuth(){
+        return "AUTH HERE";
+    }
+
 
 }

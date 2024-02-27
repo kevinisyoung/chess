@@ -2,28 +2,24 @@ package server;
 
 import Exceptions.UserAlreadyExistsException;
 import com.google.gson.Gson;
-import dataAccess.AuthDAO;
 import model.AuthData;
 import model.UserData;
 import org.eclipse.jetty.server.Authentication;
 import returnRecords.AuthResponse;
-import service.AuthService;
 import service.GameService;
-import service.UserService;
+import service.UserAuthService;
 
 import spark.Request;
 import spark.Response;
 
 public class ServerHandlers {
-    UserService userService;
+    UserAuthService userAuthService;
     GameService gameService;
-    AuthService authService;
     Gson gson;
     public ServerHandlers(){
         gson = new Gson();
-        userService = new UserService();
+        userAuthService = new UserAuthService();
         gameService = new GameService();
-        authService = new AuthService();
     }
 
     public Object clearAllHandler(Request req, Response res){
@@ -34,9 +30,8 @@ public class ServerHandlers {
          */
         System.out.println("clearAllHandler Called");
         try {
-            userService.clearAll();
+            userAuthService.clearAll();
             gameService.clearAll();
-            authService.clearAll();
 
             res.status(200);
             return new Gson().toJson(new Object());
@@ -55,7 +50,7 @@ public class ServerHandlers {
                 return new Gson().toJson(new Object());
             }
             //success
-            AuthData returnedAuthData = userService.register(requestData);
+            AuthData returnedAuthData = userAuthService.register(requestData);
             res.status(200);
             return new Gson().toJson(new AuthResponse(returnedAuthData.username(), returnedAuthData.authToken()));
         } catch (UserAlreadyExistsException e){

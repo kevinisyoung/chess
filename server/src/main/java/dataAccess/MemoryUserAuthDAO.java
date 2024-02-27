@@ -1,10 +1,11 @@
 package dataAccess;
 
 import model.AuthData;
+import model.UserData;
 
 import java.util.HashSet;
 
-public class MemoryAuthDAO implements AuthDAO{
+public class MemoryUserAuthDAO implements UserAuthDAO{
 
     HashSet<AuthData> authDatabase = new HashSet<AuthData>();
 
@@ -14,7 +15,7 @@ public class MemoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public void insertAuth() {
+    public void insertAuth(String auth) {
         System.out.println("INSERTAUTH");
     }
 
@@ -27,6 +28,16 @@ public class MemoryAuthDAO implements AuthDAO{
     public void clearAll() {
         authDatabase.clear();
         System.out.println("AUTH CLEARED");
+    }
+
+    @Override
+    public UserData getUser(String username) {
+        return null;
+    }
+
+    @Override
+    public void insertUser(UserData user) {
+
     }
 
 }
