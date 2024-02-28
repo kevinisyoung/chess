@@ -1,6 +1,8 @@
 package service;
 
+import Exceptions.DataAccessException;
 import Exceptions.UserAlreadyExistsException;
+import additionalRecords.AuthToken;
 import additionalRecords.LoginData;
 import dataAccess.MemoryUserAuthDAO;
 import dataAccess.UserAuthDAO;
@@ -38,8 +40,11 @@ public class UserAuthService {
         DAO.insertAuth(user.username(),generatedAuth);
         return new AuthData(generatedAuth, user.username());
     }
-    public void logout(AuthData user) {
-        DAO.removeAuth(user);
+    public void logout(String authToken) throws DataAccessException {
+        if (DAO.getAuth(authToken) == null){
+            throw new DataAccessException();
+        }
+        DAO.removeAuth(authToken);
     }
 
     public void clearAll(){

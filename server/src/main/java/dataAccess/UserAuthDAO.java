@@ -1,13 +1,15 @@
 package dataAccess;
 
+import Exceptions.DataAccessException;
+import additionalRecords.AuthToken;
 import model.AuthData;
 import model.UserData;
 
 public interface UserAuthDAO {
 
-    public void getAuth();
+    public AuthData getAuth(String authToken);
     public void insertAuth(String username, String authToken);
-    public void removeAuth(AuthData user);
+    public void removeAuth(String authToken) throws DataAccessException;
     public void clearAll();
 
     public UserData getUser(String username);

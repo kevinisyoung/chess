@@ -1,6 +1,7 @@
 package server;
 
 import Exceptions.UserAlreadyExistsException;
+import additionalRecords.AuthToken;
 import additionalRecords.LoginData;
 import com.google.gson.Gson;
 import model.AuthData;
@@ -11,6 +12,8 @@ import service.UserAuthService;
 
 import spark.Request;
 import spark.Response;
+
+import java.nio.file.AccessDeniedException;
 
 public class ServerHandlers {
     UserAuthService userAuthService;
@@ -97,11 +100,22 @@ public class ServerHandlers {
          */
     }
     public Object logoutHandler(Request req, Response res){
+        System.out.println("logoutHandler called");
+        String authToken;
+        try {
+            authToken = req.headers("authorization");
+            //success
+            userAuthService.logout(authToken);
+            res.status(200);
+            return new Gson().toJson(new Object());
+        } catch (Exception e){
+            res.status(500);
+            return new Gson().toJson(e.getMessage());
+        }
         /*
         Logs out an authenticated user
             An authToken is required to call this endpoint.
          */
-        return null;
     }
     public Object listGamesHandler(Request req, Response res){
         /*

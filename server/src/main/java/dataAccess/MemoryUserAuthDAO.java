@@ -1,5 +1,7 @@
 package dataAccess;
 
+import Exceptions.DataAccessException;
+import additionalRecords.AuthToken;
 import model.AuthData;
 import model.UserData;
 
@@ -16,10 +18,15 @@ public class MemoryUserAuthDAO implements UserAuthDAO{
         userDatabase.add(user);
     }
 
-    @Override
-    public void getAuth() {
-        System.out.println("GET AUTHDAO");
+    public AuthData getAuth(String authToken) {
+        for (AuthData auth : authDatabase){
+            if (authToken.equals(auth.authToken())){
+                return auth;
+            }
+        }
+        return null;
     }
+
 
     @Override
     public void insertAuth(String username, String authToken) {
@@ -27,14 +34,26 @@ public class MemoryUserAuthDAO implements UserAuthDAO{
     }
 
     @Override
-    public void removeAuth(AuthData user) {
+    public void removeAuth(String authToken) throws DataAccessException {
         System.out.println("REMOVEAUTH");
+        boolean removed = false;
+        for (AuthData auth : authDatabase){
+            if (authToken.equals(auth.authToken())){
+                authDatabase.remove(auth);
+                removed = true;
+                break;
+            }
+        }
+        if (!removed){
+            throw new DataAccessException();
+        }
     }
 
     @Override
     public void clearAll() {
         authDatabase.clear();
-        System.out.println("AUTH CLEARED");
+        System.out.println("USERAUTH CLEARED");
+
     }
 
     @Override

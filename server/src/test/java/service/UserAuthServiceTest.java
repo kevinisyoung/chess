@@ -14,6 +14,9 @@ class UserAuthServiceTest {
     void register() {
         HashSet<AuthData> authDatabase = new HashSet<AuthData>();
         HashSet<UserData> userDatabase = new HashSet<UserData>();
+
+        assertNotNull(authDatabase);
+        assertNotNull(userDatabase);
     }
 
     @Test
