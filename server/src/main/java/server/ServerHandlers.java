@@ -1,6 +1,7 @@
 package server;
 
 import Exceptions.UserAlreadyExistsException;
+import additionalRecords.LoginData;
 import com.google.gson.Gson;
 import model.AuthData;
 import model.UserData;
@@ -41,15 +42,15 @@ public class ServerHandlers {
     }
     public Object registerHandler(Request req, Response res){
         System.out.println("registerHandler Called");
-        UserData requestData;
+        UserData registerRequestData;
         try {
-            requestData = gson.fromJson(req.body(), UserData.class);
-            if (requestData.username() == null || requestData.password() == null || requestData.email() == null){
+            registerRequestData = gson.fromJson(req.body(), UserData.class);
+            if (registerRequestData.username() == null || registerRequestData.password() == null || registerRequestData.email() == null){
                 res.status(400);
                 return new Gson().toJson(new Object());
             }
             //success
-            AuthData returnedAuthData = userAuthService.register(requestData);
+            AuthData returnedAuthData = userAuthService.register(registerRequestData);
             res.status(200);
             return new Gson().toJson(new AuthResponse(returnedAuthData.username(), returnedAuthData.authToken()));
         } catch (UserAlreadyExistsException e){
@@ -70,7 +71,23 @@ public class ServerHandlers {
 //        return null;
     }
     public Object loginHandler(Request req, Response res){
+        System.out.println("loginHandler called");
+        LoginData loginRequestData;
+        try {
+            loginRequestData = gson.fromJson(req.body(), LoginData.class);
+            if (loginRequestData.username() == null || loginRequestData.password() == null){
+                res.status(400);
+                return new Gson().toJson(new Object());
+            }
 
+            //success
+            AuthData returnedAuthData = userAuthService.login(loginRequestData);
+            res.status(200);
+            return new Gson().toJson(new AuthResponse(returnedAuthData.username(), returnedAuthData.authToken()));
+        } catch (Exception e){
+            res.status(500);
+            return new Gson().toJson(e.getMessage());
+        }
 
         /*
         Log in a user
@@ -78,7 +95,6 @@ public class ServerHandlers {
             You may use the authToken with future requests that require authorization.
             No authorization authToken is required to call this endpoint.
          */
-        return null;
     }
     public Object logoutHandler(Request req, Response res){
         /*

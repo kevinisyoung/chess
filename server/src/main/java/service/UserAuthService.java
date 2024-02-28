@@ -1,6 +1,7 @@
 package service;
 
 import Exceptions.UserAlreadyExistsException;
+import additionalRecords.LoginData;
 import dataAccess.MemoryUserAuthDAO;
 import dataAccess.UserAuthDAO;
 
@@ -25,17 +26,21 @@ public class UserAuthService {
 
         DAO.insertUser(user);
         //have auth dao create auth token and insert that
-        return login(user);
+        return login(new LoginData(user.username(), user.password()));
     }
-    public AuthData login(UserData user) {
+    public AuthData login(LoginData user) {
+
         //create new authToken here
         //insert that authToken into DB using AuthDAO
         //create new AuthData using that authtoken
+
         String generatedAuth = generateAuth();
         DAO.insertAuth(user.username(),generatedAuth);
         return new AuthData(generatedAuth, user.username());
     }
-    public void logout(UserData user) {}
+    public void logout(AuthData user) {
+        DAO.removeAuth(user);
+    }
 
     public void clearAll(){
         DAO.clearAll();

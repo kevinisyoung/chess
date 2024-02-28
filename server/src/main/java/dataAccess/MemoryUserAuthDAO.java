@@ -27,7 +27,7 @@ public class MemoryUserAuthDAO implements UserAuthDAO{
     }
 
     @Override
-    public void removeAuth() {
+    public void removeAuth(AuthData user) {
         System.out.println("REMOVEAUTH");
     }
 
