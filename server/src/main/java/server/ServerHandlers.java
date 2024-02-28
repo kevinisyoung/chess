@@ -3,9 +3,11 @@ package server;
 import Exceptions.DataAccessException;
 import Exceptions.UserAlreadyExistsException;
 import additionalRecords.AuthToken;
+import additionalRecords.GameRequest;
 import additionalRecords.LoginData;
 import com.google.gson.Gson;
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 import additionalRecords.AuthResponse;
 import service.GameService;
@@ -131,6 +133,24 @@ public class ServerHandlers {
         return null;
     }
     public Object createGameHandler(Request req, Response res){
+        System.out.println("createGame called");
+        try {
+            String authToken = req.headers("authorization");
+            String gameName = gson.fromJson(req.body(), String.class);
+            if (gameName == null || gameName.isEmpty()){
+                res.status(400);
+                return new Gson().toJson(Map.of("message", "Error: game name invalid"));
+            }
+//            //success
+            GameRequest gameRequest = new GameRequest(authToken, gameName);
+
+            res.status(200);
+            return new Gson().toJson(gameService.createGame(gameRequest));
+        } catch (Exception e){
+            res.status(500);
+            return new Gson().toJson(Map.of("message", e.getMessage()));
+        }
+
         /*
         Create a new Chess Game
             The request body must contain a name for the game.
@@ -138,7 +158,6 @@ public class ServerHandlers {
             an error message describing the reason.
             An authToken is required to call this endpoint.
          */
-        return null;
     }
     public Object joinGameHandler(Request req, Response res){
         /*

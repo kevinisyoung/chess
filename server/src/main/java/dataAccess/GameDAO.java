@@ -1,12 +1,17 @@
 package dataAccess;
 
+import model.GameData;
+
+import java.util.HashSet;
+
 public interface GameDAO {
 
     public void clearAll();
-    public void createGame();
+    public void createGame(GameData gameData);
     public void getGame();
     public void listGames();
     public void updateGame();
+    public HashSet<GameData> getGames();
 
 }
 /*    For the most part, the methods on your DAO classes will be CRUD operations that:

@@ -1,12 +1,13 @@
 package dataAccess;
 
 import model.AuthData;
+import model.GameData;
 
 import java.util.HashSet;
 
 public class MemoryGameDAO implements GameDAO{
 
-    HashSet<AuthData> gameDatabase = new HashSet<AuthData>();
+    HashSet<GameData> gameDatabase = new HashSet<GameData>();
     @Override
     public void clearAll() {
         gameDatabase.clear();
@@ -14,8 +15,9 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
-    public void createGame() {
+    public void createGame(GameData gameData) {
         System.out.println("CREATEGAME");
+        gameDatabase.add(gameData);
     }
 
     @Override
@@ -32,5 +34,10 @@ public class MemoryGameDAO implements GameDAO{
     @Override
     public void updateGame() {
 
+    }
+
+    @Override
+    public HashSet<GameData> getGames() {
+        return gameDatabase;
     }
 }

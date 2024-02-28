@@ -41,7 +41,6 @@ public class UserAuthService {
             throw new DataAccessException("error: Wrong password");
         }
 
-
         //create new authToken here
         //insert that authToken into DB using AuthDAO
         //create new AuthData using that authtoken
