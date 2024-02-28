@@ -23,7 +23,6 @@ class GameServiceTest {
         gameService.createGame(new GameRequest(authToken,"Test"));
 
         assertEquals(1,gameService.DAO.getGames().size());
-
     }
 
     @Test
