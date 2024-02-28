@@ -1,5 +1,6 @@
 package server;
 
+import Exceptions.DataAccessException;
 import Exceptions.UserAlreadyExistsException;
 import additionalRecords.AuthToken;
 import additionalRecords.LoginData;
@@ -14,6 +15,7 @@ import spark.Request;
 import spark.Response;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Map;
 
 public class ServerHandlers {
     UserAuthService userAuthService;
@@ -40,7 +42,7 @@ public class ServerHandlers {
             return new Gson().toJson(new Object());
         } catch (Exception e){
             res.status(400);
-            return new Gson().toJson(e.getMessage());
+            return new Gson().toJson(Map.of("message", e.getMessage()));
         }
     }
     public Object registerHandler(Request req, Response res){
@@ -50,7 +52,7 @@ public class ServerHandlers {
             registerRequestData = gson.fromJson(req.body(), UserData.class);
             if (registerRequestData.username() == null || registerRequestData.password() == null || registerRequestData.email() == null){
                 res.status(400);
-                return new Gson().toJson(new Object());
+                return new Gson().toJson(Map.of("message", "Error: request did not contain necessary values"));
             }
             //success
             AuthData returnedAuthData = userAuthService.register(registerRequestData);
@@ -58,10 +60,10 @@ public class ServerHandlers {
             return new Gson().toJson(new AuthResponse(returnedAuthData.username(), returnedAuthData.authToken()));
         } catch (UserAlreadyExistsException e){
             res.status(403);
-            return new Gson().toJson(e.getMessage());
+            return new Gson().toJson(Map.of("message", e.getMessage()));
         } catch (Exception e){
             res.status(500);
-            return new Gson().toJson(e.getMessage());
+            return new Gson().toJson(Map.of("message", e.getMessage()));
         }
 
         /*
@@ -82,14 +84,16 @@ public class ServerHandlers {
                 res.status(400);
                 return new Gson().toJson(new Object());
             }
-
             //success
             AuthData returnedAuthData = userAuthService.login(loginRequestData);
             res.status(200);
             return new Gson().toJson(new AuthResponse(returnedAuthData.username(), returnedAuthData.authToken()));
+        } catch (DataAccessException e) {
+            res.status(401);
+            return new Gson().toJson(Map.of("message", e.getMessage()));
         } catch (Exception e){
             res.status(500);
-            return new Gson().toJson(e.getMessage());
+            return new Gson().toJson(Map.of("message", e.getMessage()));
         }
 
         /*
@@ -108,9 +112,9 @@ public class ServerHandlers {
             userAuthService.logout(authToken);
             res.status(200);
             return new Gson().toJson(new Object());
-        } catch (Exception e){
-            res.status(500);
-            return new Gson().toJson(e.getMessage());
+        } catch (DataAccessException e){
+            res.status(401);
+            return new Gson().toJson(Map.of("message", e.getMessage()));
         }
         /*
         Logs out an authenticated user

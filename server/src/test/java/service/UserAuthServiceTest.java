@@ -1,5 +1,6 @@
 package service;
 
+import Exceptions.DataAccessException;
 import Exceptions.UserAlreadyExistsException;
 import model.AuthData;
 import model.UserData;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserAuthServiceTest {
 
     @Test
-    void registerInserts() throws UserAlreadyExistsException {
+    void registerInserts() throws UserAlreadyExistsException, DataAccessException {
         UserData userData = new UserData("username","password","email");
 
         UserAuthService userAuthService = new UserAuthService();
@@ -24,7 +25,7 @@ class UserAuthServiceTest {
     }
 
     @Test
-    void registerInvalid() throws UserAlreadyExistsException {
+    void registerInvalid() throws UserAlreadyExistsException, DataAccessException {
         UserAuthService userAuthService = new UserAuthService();
 
         UserData userData = new UserData("username","password","email");
@@ -34,7 +35,7 @@ class UserAuthServiceTest {
     }
 
     @Test
-    void clearAllDatabase() throws UserAlreadyExistsException {
+    void clearAllDatabase() throws UserAlreadyExistsException, DataAccessException {
         UserAuthService userAuthService = new UserAuthService();
 
         UserData userData = new UserData("username","password","email");

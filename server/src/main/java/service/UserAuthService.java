@@ -20,7 +20,8 @@ public class UserAuthService {
     public UserAuthService(){
         DAO = new MemoryUserAuthDAO();
     }
-    public AuthData register(UserData user) throws UserAlreadyExistsException {
+    public AuthData register(UserData user) throws UserAlreadyExistsException, DataAccessException {
+
         //verify no username exists in DB
         if (DAO.getUser(user.username()) != null){
             throw new UserAlreadyExistsException("Error: already taken");
@@ -30,7 +31,16 @@ public class UserAuthService {
         //have auth dao create auth token and insert that
         return login(new LoginData(user.username(), user.password()));
     }
-    public AuthData login(LoginData user) {
+    public AuthData login(LoginData user) throws DataAccessException {
+        //verify user exists
+        if (DAO.getUser(user.username()) == null){
+            throw new DataAccessException("error: Unauthorized");
+        }
+
+        if (!DAO.getUser(user.username()).password().equals(user.password())){
+            throw new DataAccessException("error: Wrong password");
+        }
+
 
         //create new authToken here
         //insert that authToken into DB using AuthDAO
@@ -42,7 +52,7 @@ public class UserAuthService {
     }
     public void logout(String authToken) throws DataAccessException {
         if (DAO.getAuth(authToken) == null){
-            throw new DataAccessException();
+            throw new DataAccessException("Error: user not found");
         }
         DAO.removeAuth(authToken);
     }
