@@ -2,6 +2,7 @@ package service;
 
 import additionalRecords.GameRequest;
 import additionalRecords.GameResponse;
+import additionalRecords.GamesList;
 import dataAccess.GameDAO;
 import dataAccess.MemoryGameDAO;
 import dataAccess.MemoryUserAuthDAO;
@@ -16,6 +17,10 @@ public class GameService {
     }
     public void clearAll(){
         DAO.clearAll();
+    }
+
+    public GamesList listGames(){
+        return new GamesList(DAO.getGames());
     }
 
 

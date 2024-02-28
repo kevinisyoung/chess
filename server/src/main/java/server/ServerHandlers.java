@@ -121,6 +121,20 @@ public class ServerHandlers {
          */
     }
     public Object listGamesHandler(Request req, Response res){
+        System.out.println("listGamesHandler called");
+        try {
+            String authToken = req.headers("authorization");
+
+            if (userAuthService.getAuth(authToken) == null){
+                res.status(401);
+                return new Gson().toJson(Map.of("message", "Error: User logged in improperly"));
+            }
+
+            GamesList gamesList = gameService.listGames();
+            return new Gson().toJson(gamesList);
+        } catch (Exception e){
+
+        }
         /*
         Lists all the games in the database
             This API does not take a request body.

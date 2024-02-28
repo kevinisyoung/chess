@@ -1,5 +1,6 @@
 package dataAccess;
 
+import additionalRecords.GamesList;
 import model.AuthData;
 import model.GameData;
 
@@ -25,11 +26,6 @@ public class MemoryGameDAO implements GameDAO{
         System.out.println("GETGAME");
     }
 
-    @Override
-    public void listGames() {
-        System.out.println("LISTGAMES");
-
-    }
 
     @Override
     public void updateGame() {

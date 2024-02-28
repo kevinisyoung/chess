@@ -9,7 +9,6 @@ public interface GameDAO {
     public void clearAll();
     public void createGame(GameData gameData);
     public void getGame();
-    public void listGames();
     public void updateGame();
     public HashSet<GameData> getGames();
 
