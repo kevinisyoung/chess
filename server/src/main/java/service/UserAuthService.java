@@ -65,5 +65,9 @@ public class UserAuthService {
         return UUID.randomUUID().toString();
     }
 
+    public AuthData getAuth(String authToken){
+        return DAO.getAuth(authToken);
+    }
+
 
 }

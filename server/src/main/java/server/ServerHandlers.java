@@ -2,14 +2,11 @@ package server;
 
 import Exceptions.DataAccessException;
 import Exceptions.UserAlreadyExistsException;
-import additionalRecords.AuthToken;
-import additionalRecords.GameRequest;
-import additionalRecords.LoginData;
+import additionalRecords.*;
 import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
-import additionalRecords.AuthResponse;
 import service.GameService;
 import service.UserAuthService;
 
@@ -136,13 +133,19 @@ public class ServerHandlers {
         System.out.println("createGame called");
         try {
             String authToken = req.headers("authorization");
-            String gameName = gson.fromJson(req.body(), String.class);
-            if (gameName == null || gameName.isEmpty()){
+            if (userAuthService.getAuth(authToken) == null){
+                res.status(401);
+                return new Gson().toJson(Map.of("message", "Error: User logged in improperly"));
+            }
+            GameNameRequest gameName = gson.fromJson(req.body(), GameNameRequest.class);
+            if (gameName == null || gameName.gameName().isEmpty()){
                 res.status(400);
                 return new Gson().toJson(Map.of("message", "Error: game name invalid"));
             }
-//            //success
-            GameRequest gameRequest = new GameRequest(authToken, gameName);
+            //success
+            GameRequest gameRequest = new GameRequest(authToken, gameName.gameName());
+
+
 
             res.status(200);
             return new Gson().toJson(gameService.createGame(gameRequest));
