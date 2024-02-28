@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class UserAuthService {
 
-    UserAuthDAO DAO;
+    MemoryUserAuthDAO DAO;
 
 
     public UserAuthService(){

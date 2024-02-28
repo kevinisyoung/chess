@@ -52,6 +52,7 @@ public class MemoryUserAuthDAO implements UserAuthDAO{
     @Override
     public void clearAll() {
         authDatabase.clear();
+        userDatabase.clear();
         System.out.println("USERAUTH CLEARED");
 
     }
@@ -66,4 +67,11 @@ public class MemoryUserAuthDAO implements UserAuthDAO{
         return null;
     }
 
+    public HashSet<AuthData> getAuthDatabase() {
+        return authDatabase;
+    }
+
+    public HashSet<UserData> getUserDatabase() {
+        return userDatabase;
+    }
 }

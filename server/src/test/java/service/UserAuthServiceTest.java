@@ -14,32 +14,39 @@ class UserAuthServiceTest {
 
     @Test
     void registerInserts() throws UserAlreadyExistsException {
-        HashSet<AuthData> authDatabase = new HashSet<AuthData>();
-        HashSet<UserData> userDatabase = new HashSet<UserData>();
+        UserData userData = new UserData("username","password","email");
 
         UserAuthService userAuthService = new UserAuthService();
-        GameService gameService = new GameService();
-
-        UserData userData = new UserData("username","password","email");
         userAuthService.register(userData);
+        assertEquals(1,userAuthService.DAO.getAuthDatabase().size());
+        assertEquals(1,userAuthService.DAO.getUserDatabase().size());
 
-        assertNotNull(authDatabase);
-        assertNotNull(userDatabase);
     }
 
     @Test
     void registerInvalid() throws UserAlreadyExistsException {
-        HashSet<AuthData> authDatabase = new HashSet<AuthData>();
-        HashSet<UserData> userDatabase = new HashSet<UserData>();
-
         UserAuthService userAuthService = new UserAuthService();
-        GameService gameService = new GameService();
 
         UserData userData = new UserData("username","password","email");
         userAuthService.register(userData);
 
         assertThrows(UserAlreadyExistsException.class, () -> userAuthService.register(userData));
     }
+
+    @Test
+    void clearAllDatabase() throws UserAlreadyExistsException {
+        UserAuthService userAuthService = new UserAuthService();
+
+        UserData userData = new UserData("username","password","email");
+        userAuthService.register(userData);
+        userAuthService.clearAll();
+
+
+        assertEquals(0,userAuthService.DAO.getAuthDatabase().size());
+        assertEquals(0,userAuthService.DAO.getUserDatabase().size());
+
+    }
+
 
     @Test
     void login() {
@@ -49,8 +56,6 @@ class UserAuthServiceTest {
     void logout() {
     }
 
-    @Test
-    void clearAllDatabase() {
-    }
+
 
 }

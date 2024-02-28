@@ -4,7 +4,7 @@ import dataAccess.GameDAO;
 import dataAccess.MemoryGameDAO;
 
 public class GameService {
-    GameDAO DAO;
+    MemoryGameDAO DAO;
     public GameService(){
         DAO = new MemoryGameDAO();
     }
