@@ -1,5 +1,7 @@
 package dataAccess;
 
+import Exceptions.DataAccessException;
+import additionalRecords.GameJoinRequest;
 import model.GameData;
 
 import java.util.HashSet;
@@ -9,7 +11,7 @@ public interface GameDAO {
     public void clearAll();
     public void createGame(GameData gameData);
     public void getGame();
-    public void updateGame();
+    public void updateGame(GameJoinRequest gameJoinRequest) throws DataAccessException;
     public HashSet<GameData> getGames();
 
 }

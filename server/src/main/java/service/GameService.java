@@ -1,8 +1,7 @@
 package service;
 
-import additionalRecords.GameRequest;
-import additionalRecords.GameResponse;
-import additionalRecords.GamesList;
+import Exceptions.DataAccessException;
+import additionalRecords.*;
 import dataAccess.GameDAO;
 import dataAccess.MemoryGameDAO;
 import dataAccess.MemoryUserAuthDAO;
@@ -10,7 +9,6 @@ import model.GameData;
 
 public class GameService {
     MemoryGameDAO DAO;
-    MemoryUserAuthDAO authDAO;
     int gameIDIncrementer = 0;
     public GameService(){
         DAO = new MemoryGameDAO();
@@ -32,5 +30,9 @@ public class GameService {
         DAO.createGame(gameData);
 
         return new GameResponse(gameIDIncrementer);
+    }
+
+    public void joinGame(GameJoinRequest gameJoinRequest) throws DataAccessException {
+        DAO.updateGame(gameJoinRequest);
     }
 }

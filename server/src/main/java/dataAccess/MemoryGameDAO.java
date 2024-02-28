@@ -1,5 +1,7 @@
 package dataAccess;
 
+import Exceptions.DataAccessException;
+import additionalRecords.GameJoinRequest;
 import additionalRecords.GamesList;
 import model.AuthData;
 import model.GameData;
@@ -28,7 +30,25 @@ public class MemoryGameDAO implements GameDAO{
 
 
     @Override
-    public void updateGame() {
+    public void updateGame(GameJoinRequest gameJoinRequest) throws DataAccessException {
+        for (GameData game : new HashSet<>(gameDatabase)) {
+            if (game.gameID() == gameJoinRequest.gameID()) {
+                GameData updatedGame;
+                if ((gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("WHITE") && game.whiteUsername() != null) || (gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("BLACK") && game.blackUsername() != null)) {
+                    throw new DataAccessException("Error: Color for that game already exists");
+                }
+                if (gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("WHITE")) {
+                    updatedGame = game.setWhiteUsername(gameJoinRequest.playerName());
+                } else if (gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("BLACK")) {
+                    updatedGame = game.setBlackUsername(gameJoinRequest.playerName());
+                } else {
+                    continue;
+                }
+                gameDatabase.remove(game);
+                gameDatabase.add(updatedGame);
+            }
+        }
+
 
     }
 

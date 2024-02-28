@@ -177,13 +177,36 @@ public class ServerHandlers {
          */
     }
     public Object joinGameHandler(Request req, Response res){
+        System.out.println("joinGame called");
+        try {
+            String authToken = req.headers("authorization");
+            if (userAuthService.getAuth(authToken) == null){
+                res.status(401);
+                return new Gson().toJson(Map.of("message", "Error: User logged in improperly"));
+            }
+            GameIDJoinRequest gameIDJoinRequest = gson.fromJson(req.body(), GameIDJoinRequest.class);
+            if (gameIDJoinRequest.gameID() < 1){
+                res.status(400);
+                return new Gson().toJson(Map.of("message", "Error: game ID invalid"));
+            }
+            //success
+            //get username
+            AuthData returnedAuthData = userAuthService.getAuth(authToken);
+            GameJoinRequest gameJoinRequest = new GameJoinRequest(authToken, gameIDJoinRequest.playerColor(), gameIDJoinRequest.gameID(), returnedAuthData.username());
+            gameService.joinGame(gameJoinRequest);
+            res.status(200);
+            return new Gson().toJson(new Object());
+        } catch (DataAccessException e){
+            res.status(403);
+            return new Gson().toJson(Map.of("message", e.getMessage()));
+        }
+
         /*
         Join a Chess Game
             The request body must contain the game ID.
             If no color is specified then the user is joined as an observer.
             An authToken is required to call this endpoint.
          */
-        return null;
     }
 }
 
