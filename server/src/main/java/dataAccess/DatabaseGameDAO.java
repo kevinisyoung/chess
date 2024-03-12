@@ -74,7 +74,7 @@ public class DatabaseGameDAO implements GameDAO{
                 // Serialize and store the friend JSON.
                 ChessGame tempGame = new ChessGame();
                 var json = new Gson().toJson(tempGame);
-                preparedStatement.setString(3, json);
+                preparedStatement.setString(2, json);
 
                 preparedStatement.executeUpdate();
             }
@@ -111,9 +111,6 @@ public class DatabaseGameDAO implements GameDAO{
         } catch (SQLException | DataAccessException e) {
             throw new RuntimeException(e);
         }
-
-
-
         return new GameData(idRecieved,whiteUsernameRecieved,blackUsernameRecieved,gameNameRecieved,gameRecieved);
     }
 
