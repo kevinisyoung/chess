@@ -24,8 +24,8 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
-    public void getGame() {
-        System.out.println("GETGAME");
+    public GameData getGame(int id) {
+        return null;
     }
 
 

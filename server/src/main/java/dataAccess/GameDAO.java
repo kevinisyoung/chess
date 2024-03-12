@@ -10,7 +10,7 @@ public interface GameDAO {
 
     public void clearAll();
     public void createGame(GameData gameData);
-    public void getGame();
+    public GameData getGame(int id);
     public void updateGame(GameJoinRequest gameJoinRequest) throws DataAccessException;
     public HashSet<GameData> getGames();
 
