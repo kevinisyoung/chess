@@ -131,11 +131,19 @@ public class DatabaseGameDAO implements GameDAO{
             conn.setCatalog("chess");
             String columnName = null;
 
+            var currGame = getGame(gameJoinRequest.gameID());
+
             // Determine which column to update
             if (gameJoinRequest.playerColor() == ChessGame.TeamColor.BLACK) {
                 columnName = "blackUsername";
+                if (currGame.blackUsername() != null){
+                    throw new DataAccessException("Player color already exists");
+                }
             } else if (gameJoinRequest.playerColor() == ChessGame.TeamColor.WHITE) {
                 columnName = "whiteUsername";
+                if (currGame.whiteUsername() != null){
+                    throw new DataAccessException("Player color already exists");
+                }
             }
 
             if (columnName != null) {
@@ -151,7 +159,7 @@ public class DatabaseGameDAO implements GameDAO{
             }
 
         } catch (SQLException | DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.getMessage());
         }
     }
 

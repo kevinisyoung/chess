@@ -27,15 +27,17 @@ public class GameService {
 
 
     public GameResponse createGame(GameRequest gameInfo){
-
-        gameIDIncrementer++;
-        GameData gameData = new GameData(gameIDIncrementer, null, null, gameInfo.gameName(), null);
+        int currentId = DAO.getGames().size() + 1;
+        GameData gameData = new GameData(currentId, null, null, gameInfo.gameName(), null);
         DAO.createGame(gameData);
 
-        return new GameResponse(gameIDIncrementer);
+        return new GameResponse(currentId);
     }
 
     public void joinGame(GameJoinRequest gameJoinRequest) throws DataAccessException {
-        DAO.updateGame(gameJoinRequest);
+        try {DAO.updateGame(gameJoinRequest);}
+        catch (DataAccessException e){
+            throw new DataAccessException("error: " + e.getMessage());
+        }
     }
 }
