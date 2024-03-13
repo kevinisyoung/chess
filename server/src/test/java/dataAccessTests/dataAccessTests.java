@@ -1,3 +1,5 @@
+package dataAccessTests;
+
 import Exceptions.DataAccessException;
 import chess.ChessGame;
 import dataAccess.DatabaseGameDAO;
