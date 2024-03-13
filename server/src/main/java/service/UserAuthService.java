@@ -24,7 +24,7 @@ public class UserAuthService {
     public AuthData register(UserData user) throws UserAlreadyExistsException, DataAccessException {
 
         //verify no username exists in DB
-        if (DAO.getUser(user.username()) != null){
+        if (DAO.getUser(user.username()).username() != null){
             throw new UserAlreadyExistsException("Error: already taken");
         }
 

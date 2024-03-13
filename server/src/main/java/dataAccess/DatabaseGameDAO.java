@@ -66,7 +66,7 @@ public class DatabaseGameDAO implements GameDAO{
     public void clearAll() {
         try (var conn = DatabaseManager.getConnection()) {
             conn.setCatalog("chess");
-            try (var preparedStatement = conn.prepareStatement("DELETE * FROM game")) {
+            try (var preparedStatement = conn.prepareStatement("truncate table game")) {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException | DataAccessException e) {
@@ -157,7 +157,32 @@ public class DatabaseGameDAO implements GameDAO{
 
     @Override
     public HashSet<GameData> getGames() {
-        return null;
+        int idRecieved = -1;
+        String gameNameRecieved = null;
+        String whiteUsernameRecieved = null;
+        String blackUsernameRecieved = null;
+        ChessGame gameRecieved = null;
+
+        try (var conn = DatabaseManager.getConnection()) {
+            conn.setCatalog("chess");
+            try (var preparedStatement = conn.prepareStatement("SELECT * FROM game WHERE id =?;")) {
+                preparedStatement.setInt(1, id);
+                try (var rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        idRecieved = rs.getInt("id");
+                        gameNameRecieved = rs.getString("gameName");
+                        whiteUsernameRecieved = rs.getString("whiteUsername");
+                        blackUsernameRecieved = rs.getString("blackUsername");
+                        String gameJSON = rs.getString("game");
+                        Gson gson = new Gson();
+                        gameRecieved = gson.fromJson(gameJSON,ChessGame.class);
+                    }
+                }
+            }
+        } catch (SQLException | DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return new GameData(idRecieved,whiteUsernameRecieved,blackUsernameRecieved,gameNameRecieved,gameRecieved);
     }
 
 }

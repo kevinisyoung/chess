@@ -10,20 +10,16 @@ import java.sql.SQLException;
 
 public class DatabaseUserAuthDAO implements UserAuthDAO{
 
-    public static void main(String[] args) {
+    public DatabaseUserAuthDAO() {
         try {
-            var testDAO = new DatabaseUserAuthDAO();
-//            makeSQLCalls();
-            testDAO.configureUserDatabase();
-            testDAO.configureAuthDatabase();
+            //makeSQLCalls();
+            configureUserDatabase();
+            configureAuthDatabase();
             System.out.println("CONNECTION TO DB ESTABLISHED.");
         } catch (SQLException | DataAccessException e) {
             e.printStackTrace();
         }
     }
-
-//    public DatabaseUserAuthDAO() throws SQLException, DataAccessException {
-//    }
 
     public void configureUserDatabase() throws SQLException, DataAccessException {
         DatabaseManager.createDatabase();
@@ -55,7 +51,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
                     CREATE TABLE IF NOT EXISTS auth (
             username VARCHAR(255) NOT NULL,
             authToken VARCHAR(255) NOT NULL,
-            PRIMARY KEY (username)
+            PRIMARY KEY (authToken)
             )""";
 
             try (var createTableStatement = conn.prepareStatement(createTable)) {
@@ -119,10 +115,10 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
     public void clearAll() {
         try (var conn = DatabaseManager.getConnection()) {
             conn.setCatalog("chess");
-            try (var preparedStatement = conn.prepareStatement("DELETE * FROM auth")) {
+            try (var preparedStatement = conn.prepareStatement("truncate table auth")) {
                 preparedStatement.executeUpdate();
             }
-            try (var preparedStatement = conn.prepareStatement("DELETE * FROM user")) {
+            try (var preparedStatement = conn.prepareStatement("truncate table user")) {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException | DataAccessException e) {
