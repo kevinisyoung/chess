@@ -41,7 +41,7 @@ public class DatabaseGameDAO implements GameDAO{
         DatabaseManager.createDatabase();
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
 
             var createGameTable = """
                     CREATE TABLE  IF NOT EXISTS game (
@@ -65,7 +65,7 @@ public class DatabaseGameDAO implements GameDAO{
     @Override
     public void clearAll() {
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("truncate table game")) {
                 preparedStatement.executeUpdate();
             }
@@ -78,7 +78,7 @@ public class DatabaseGameDAO implements GameDAO{
     @Override
     public void createGame(GameData gameData) {
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("INSERT INTO game (gameName, game) VALUES(?, ?)")) {
                 preparedStatement.setString(1, gameData.gameName());
 
@@ -104,7 +104,7 @@ public class DatabaseGameDAO implements GameDAO{
         ChessGame gameRecieved = null;
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("SELECT * FROM game WHERE id =?;")) {
                 preparedStatement.setInt(1, id);
                 try (var rs = preparedStatement.executeQuery()) {
@@ -128,7 +128,7 @@ public class DatabaseGameDAO implements GameDAO{
     @Override
     public void updateGame(GameJoinRequest gameJoinRequest) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             String columnName = null;
 
             var currGame = getGame(gameJoinRequest.gameID());
@@ -174,7 +174,7 @@ public class DatabaseGameDAO implements GameDAO{
         ChessGame gameRecieved = null;
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("SELECT * FROM game")) {
                 try (var rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {

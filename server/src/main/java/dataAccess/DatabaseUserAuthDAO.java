@@ -25,7 +25,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
         DatabaseManager.createDatabase();
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
 
             var createTable = """
                     CREATE TABLE IF NOT EXISTS user (
@@ -45,7 +45,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
         DatabaseManager.createDatabase();
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
 
             var createTable = """
                     CREATE TABLE IF NOT EXISTS auth (
@@ -67,7 +67,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
         String authTokenRecieved = null;
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE authToken =?;")) {
                 preparedStatement.setString(1, authToken);
                 try (var rs = preparedStatement.executeQuery()) {
@@ -89,7 +89,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
     @Override
     public void insertAuth(String username, String authToken) {
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("INSERT INTO auth (username,authToken) VALUES(?,?);")) {
                 preparedStatement.setString(1,username);
                 preparedStatement.setString(2,authToken);
@@ -103,7 +103,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
     @Override
     public void removeAuth(String authToken) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("DELETE FROM auth WHERE authToken=?;")) {
                 preparedStatement.setString(1,authToken);
                 preparedStatement.executeUpdate();
@@ -116,7 +116,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
     @Override
     public void clearAll() {
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("truncate table auth")) {
                 preparedStatement.executeUpdate();
             }
@@ -135,7 +135,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
         String emailRecieved = null;
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("SELECT * FROM user WHERE username =?;")) {
                 preparedStatement.setString(1, username);
                 try (var rs = preparedStatement.executeQuery()) {
@@ -156,7 +156,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
     @Override
     public void insertUser(UserData user) {
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("INSERT INTO user (username,password,email) VALUES(?,?,?);")) {
                 preparedStatement.setString(1,user.username());
                 preparedStatement.setString(2,user.password());

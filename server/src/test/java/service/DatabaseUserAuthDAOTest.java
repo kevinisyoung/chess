@@ -39,7 +39,7 @@ class DatabaseUserAuthDAOTest {
         testDAO.insertAuth(testUsername,testAuthToken);
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
 
             try (var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE authToken =?;")) {
                 preparedStatement.setString(1,testAuthToken);
@@ -71,7 +71,7 @@ class DatabaseUserAuthDAOTest {
         testDAO.insertAuth(testUsername,testAuthToken);
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
 
             testDAO.configureUserDatabase();
             testDAO.configureAuthDatabase();
@@ -128,7 +128,7 @@ class DatabaseUserAuthDAOTest {
         testDAO.insertUser(new UserData(testUsername,testPassword,testEmail));
 
         try (var conn = DatabaseManager.getConnection()) {
-            conn.setCatalog("chess");
+            conn.setCatalog(DatabaseManager.getConnection().getCatalog());
 
             try (var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE username =?;")) {
                 preparedStatement.setString(1,testUsername);
