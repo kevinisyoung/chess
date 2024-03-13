@@ -80,7 +80,9 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
         } catch (SQLException | DataAccessException e) {
             throw new RuntimeException(e);
         }
-
+        if (authTokenRecieved == null || usernameRecieved == null){
+            return null;
+        }
         return new AuthData(authTokenRecieved,usernameRecieved);
     }
 

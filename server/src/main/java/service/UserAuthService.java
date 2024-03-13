@@ -34,10 +34,10 @@ public class UserAuthService {
     }
     public AuthData login(LoginData user) throws DataAccessException {
         //verify user exists
-        if (DAO.getUser(user.username()) == null){
+        if (DAO.getUser(user.username()) == null || DAO.getUser(user.username()).username() == null){
             throw new DataAccessException("error: Unauthorized");
         }
-
+        var testLoginResult = DAO.getUser(user.username());
         if (!DAO.getUser(user.username()).password().equals(user.password())){
             throw new DataAccessException("error: Wrong password");
         }
