@@ -3,6 +3,7 @@ package dataAccess;
 import Exceptions.DataAccessException;
 import additionalRecords.GameJoinRequest;
 import additionalRecords.GamesList;
+import chess.ChessGame;
 import model.AuthData;
 import model.GameData;
 
@@ -34,12 +35,12 @@ public class MemoryGameDAO implements GameDAO{
         for (GameData game : new HashSet<>(gameDatabase)) {
             if (game.gameID() == gameJoinRequest.gameID()) {
                 GameData updatedGame;
-                if ((gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("WHITE") && game.whiteUsername() != null) || (gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("BLACK") && game.blackUsername() != null)) {
+                if ((gameJoinRequest.playerColor() == ChessGame.TeamColor.WHITE && game.whiteUsername() != null) || (gameJoinRequest.playerColor() == ChessGame.TeamColor.BLACK && game.blackUsername() != null)) {
                     throw new DataAccessException("Error: Color for that game already exists");
                 }
-                if (gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("WHITE")) {
+                if (gameJoinRequest.playerColor() == ChessGame.TeamColor.WHITE) {
                     updatedGame = game.setWhiteUsername(gameJoinRequest.playerName());
-                } else if (gameJoinRequest.playerColor() != null && gameJoinRequest.playerColor().equals("BLACK")) {
+                } else if (gameJoinRequest.playerColor() == ChessGame.TeamColor.BLACK) {
                     updatedGame = game.setBlackUsername(gameJoinRequest.playerName());
                 } else {
                     continue;

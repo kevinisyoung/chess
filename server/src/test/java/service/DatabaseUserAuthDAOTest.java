@@ -76,19 +76,23 @@ class DatabaseUserAuthDAOTest {
             testDAO.configureUserDatabase();
             testDAO.configureAuthDatabase();
 
-            testDAO.insertAuth("TEST","TEST");
-            testDAO.insertAuth("TEST1","TEST1");
-            testDAO.insertAuth("TEST2","TEST2");
+            var testUsername1 = UUID.randomUUID().toString();
+            var testAuthToken1 = UUID.randomUUID().toString();
+            var testUsername2 = UUID.randomUUID().toString();
+            var testAuthToken2 = UUID.randomUUID().toString();
+            var testUsername3 = UUID.randomUUID().toString();
+            var testAuthToken3 = UUID.randomUUID().toString();
+
 
             try (var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE authToken =?;")) {
                 preparedStatement.setString(1,testAuthToken);
                 try (var rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
                         var usernameReceived = rs.getString("username");
-                        var authTokenRecieved = rs.getString("authToken");
+                        var authTokenReceived = rs.getString("authToken");
 
                         assertEquals(testUsername, usernameReceived);
-                        assertEquals(testAuthToken, authTokenRecieved);
+                        assertEquals(testAuthToken, authTokenReceived);
                         //delete the auth data. it was found.
                         testDAO.removeAuth(testAuthToken);
                     }

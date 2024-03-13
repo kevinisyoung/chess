@@ -14,8 +14,12 @@ import java.util.HashSet;
 
 public class DatabaseGameDAO implements GameDAO{
 
-    public DatabaseGameDAO() throws SQLException,DataAccessException {
-        configureGameDatabase();
+    public DatabaseGameDAO() {
+        try{
+            configureGameDatabase();
+        } catch (SQLException | DataAccessException e){
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -60,7 +64,14 @@ public class DatabaseGameDAO implements GameDAO{
 
     @Override
     public void clearAll() {
-
+        try (var conn = DatabaseManager.getConnection()) {
+            conn.setCatalog("chess");
+            try (var preparedStatement = conn.prepareStatement("DELETE * FROM game")) {
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException | DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -116,7 +127,32 @@ public class DatabaseGameDAO implements GameDAO{
 
     @Override
     public void updateGame(GameJoinRequest gameJoinRequest) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            conn.setCatalog("chess");
+            String columnName = null;
 
+            // Determine which column to update
+            if (gameJoinRequest.playerColor() == ChessGame.TeamColor.BLACK) {
+                columnName = "blackUsername";
+            } else if (gameJoinRequest.playerColor() == ChessGame.TeamColor.WHITE) {
+                columnName = "whiteUsername";
+            }
+
+            if (columnName != null) {
+                // Construct the SQL statement with the column name
+                String sql = "UPDATE game SET " + columnName + " = ? WHERE id = ?";
+
+                try (var preparedStatement = conn.prepareStatement(sql)) {
+                    preparedStatement.setString(1, gameJoinRequest.playerName());
+                    preparedStatement.setInt(2, gameJoinRequest.gameID());
+
+                    preparedStatement.executeUpdate();
+                }
+            }
+
+        } catch (SQLException | DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

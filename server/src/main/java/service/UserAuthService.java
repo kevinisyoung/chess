@@ -4,6 +4,7 @@ import Exceptions.DataAccessException;
 import Exceptions.UserAlreadyExistsException;
 import additionalRecords.AuthToken;
 import additionalRecords.LoginData;
+import dataAccess.DatabaseUserAuthDAO;
 import dataAccess.MemoryUserAuthDAO;
 import dataAccess.UserAuthDAO;
 
@@ -14,11 +15,11 @@ import java.util.UUID;
 
 public class UserAuthService {
 
-    MemoryUserAuthDAO DAO;
+    DatabaseUserAuthDAO DAO;
 
 
     public UserAuthService(){
-        DAO = new MemoryUserAuthDAO();
+        DAO = new DatabaseUserAuthDAO();
     }
     public AuthData register(UserData user) throws UserAlreadyExistsException, DataAccessException {
 

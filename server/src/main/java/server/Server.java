@@ -1,10 +1,13 @@
 package server;
 
+import Exceptions.DataAccessException;
 import spark.*;
+
+import java.sql.SQLException;
 
 public class Server {
     ServerHandlers serverHandlers;
-    public Server(){
+    public Server() {
         serverHandlers = new ServerHandlers();
     }
 

@@ -1,5 +1,7 @@
 package additionalRecords;
 
-public record GameIDJoinRequest(String playerColor, int gameID) {
+import chess.ChessGame;
+
+public record GameIDJoinRequest(ChessGame.TeamColor playerColor, int gameID) {
 
 }
