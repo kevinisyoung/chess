@@ -1,9 +1,7 @@
-package dataAccess;
-
 import Exceptions.DataAccessException;
 import chess.ChessGame;
+import dataAccess.DatabaseGameDAO;
 import model.GameData;
-import model.UserData;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -11,7 +9,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DatabaseGameDAOTest {
+class dataAccessTests {
 
     @Test
     void clearAll() {
