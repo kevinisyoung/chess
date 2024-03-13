@@ -157,6 +157,8 @@ public class DatabaseGameDAO implements GameDAO{
 
     @Override
     public HashSet<GameData> getGames() {
+        var gamesSet = new HashSet<GameData>();
+
         int idRecieved = -1;
         String gameNameRecieved = null;
         String whiteUsernameRecieved = null;
@@ -165,8 +167,7 @@ public class DatabaseGameDAO implements GameDAO{
 
         try (var conn = DatabaseManager.getConnection()) {
             conn.setCatalog("chess");
-            try (var preparedStatement = conn.prepareStatement("SELECT * FROM game WHERE id =?;")) {
-                preparedStatement.setInt(1, id);
+            try (var preparedStatement = conn.prepareStatement("SELECT * FROM game")) {
                 try (var rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
                         idRecieved = rs.getInt("id");
@@ -176,13 +177,15 @@ public class DatabaseGameDAO implements GameDAO{
                         String gameJSON = rs.getString("game");
                         Gson gson = new Gson();
                         gameRecieved = gson.fromJson(gameJSON,ChessGame.class);
+
+                        gamesSet.add(new GameData(idRecieved,whiteUsernameRecieved,blackUsernameRecieved,gameNameRecieved,gameRecieved));
                     }
                 }
             }
         } catch (SQLException | DataAccessException e) {
             throw new RuntimeException(e);
         }
-        return new GameData(idRecieved,whiteUsernameRecieved,blackUsernameRecieved,gameNameRecieved,gameRecieved);
+        return gamesSet;
     }
 
 }
