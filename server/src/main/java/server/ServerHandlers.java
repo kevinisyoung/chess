@@ -48,6 +48,7 @@ public class ServerHandlers {
         System.out.println("registerHandler Called");
         UserData registerRequestData;
         try {
+            var reqBody = req.body();
             registerRequestData = gson.fromJson(req.body(), UserData.class);
             if (registerRequestData.username() == null || registerRequestData.password() == null || registerRequestData.email() == null){
                 res.status(400);
