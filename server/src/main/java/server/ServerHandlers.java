@@ -109,6 +109,7 @@ public class ServerHandlers {
         try {
             authToken = req.headers("authorization");
             //success
+
             userAuthService.logout(authToken);
             res.status(200);
             return new Gson().toJson(new Object());

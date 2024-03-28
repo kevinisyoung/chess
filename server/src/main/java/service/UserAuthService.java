@@ -2,11 +2,8 @@ package service;
 
 import Exceptions.DataAccessException;
 import Exceptions.UserAlreadyExistsException;
-import additionalRecords.AuthToken;
 import additionalRecords.LoginData;
 import dataAccess.DatabaseUserAuthDAO;
-import dataAccess.MemoryUserAuthDAO;
-import dataAccess.UserAuthDAO;
 
 import model.AuthData;
 import model.UserData;

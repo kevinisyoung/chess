@@ -1,4 +1,4 @@
-import chess.*;
+import server.ServerFacade;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -38,11 +38,12 @@ public class Main {
                         // perform login function
                         try {
                             serverFacade.login(username, password);
+                            System.out.println("Login successful.");
+                            isLoggedIn = true;
                         } catch (Exception e){
                             e.printStackTrace();
+                            System.exit(0);
                         }
-                        System.out.println("Registration and login successful.");
-                        isLoggedIn = true;
                         break;
                     case "register":
                         System.out.println("Enter the following information: <username> <password> <email>");
@@ -53,11 +54,11 @@ public class Main {
                         // perform register function
                         try {
                             serverFacade.register(username, password,email);
+                            System.out.println("Registration and login successful.");
+                            isLoggedIn = true;
                         } catch (Exception e){
                             e.printStackTrace();
                         }
-                        System.out.println("Registration and login successful.");
-                        isLoggedIn = true;
                         break;
                 }
             }
@@ -79,17 +80,40 @@ public class Main {
                         System.out.print("--HELP MENU:--\n\"Register\": Create account\n\"Logout\": Log out of account\n\"Quit\": Exit the program");
                         break;
                     case "logout":
-                        System.out.println("Logout successful");
                         //perform logout function
-                        isLoggedIn = false;
+                        try {
+                            serverFacade.logout();
+                            System.out.println("Logout successful.");
+                            isLoggedIn = false;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
                         break;
-                    case "register":
-                        System.out.println("Enter the following information: <username> <password> <email>");
-                        username = scanner.next();
-                        password = scanner.next();
-                        email = scanner.next();
-                        responseOutput = username + password + email;
+                    case "games":
+                        //perform logout function
+                        try {
+//                            serverFacade.getAllGames();
+                            System.out.println("All games:");
+                            //for loop to cycle through all games and print out name of each with a number next to it
+                            isLoggedIn = false;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
                         break;
+                    case "join":
+                        //perform logout function
+                        try {
+                            var gameNameorID = scanner.next();
+//                            serverFacade.joinGame
+//                            serverFacade.getAllGames();
+                            System.out.println("All games:");
+                            //for loop to cycle through all games and print out name of each with a number next to it
+                            isLoggedIn = false;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        break;
+
                 }
                 System.out.println(responseOutput);
 

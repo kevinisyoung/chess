@@ -1,7 +1,6 @@
 package dataAccess;
 
 import Exceptions.DataAccessException;
-import additionalRecords.AuthToken;
 import model.AuthData;
 import model.UserData;
 

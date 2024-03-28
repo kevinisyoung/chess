@@ -1,3 +1,5 @@
+package server;
+
 import Exceptions.DataAccessException;
 import additionalRecords.*;
 import com.google.gson.Gson;
@@ -11,6 +13,8 @@ public class ServerFacade {
 
     private final String serverUrl;
 
+    private String userAuthStored = "";
+
     public ServerFacade(String url) {
         serverUrl = url;
     }
@@ -21,16 +25,28 @@ public class ServerFacade {
 //        return this.makeRequest("POST", path, pet, Pet.class);
 //    }
 
-    public void logout() throws ResponseException {
+    public void logout() {
         var path = "/session";
-        this.makeRequest("DELETE", path, null, null);
+        var authTokenRecord = new AuthToken(userAuthStored);
+        try{
+            this.makeRequest("DELETE", path, authTokenRecord, authTokenRecord.getClass());
+        } catch (ResponseException e){
+            e.printStackTrace();
+        }
     }
 
     public void register(String username, String password, String email) {
         UserData registerData = new UserData(username,password,email);
         var path = "/user";
         try{
-            this.makeRequest("POST", path, registerData, AuthResponse.class );
+            var response = this.makeRequest("POST", path, registerData, AuthResponse.class );
+            userAuthStored = response.authToken();
+            if (userAuthStored.charAt(0) == '\"'){
+                userAuthStored = userAuthStored.substring(1);
+            }
+            if (userAuthStored.charAt(userAuthStored.length()-1) == '\"'){
+                userAuthStored = userAuthStored.substring(0,userAuthStored.length()-2);
+            }
         } catch (ResponseException e){
             e.printStackTrace();
         }
@@ -38,9 +54,11 @@ public class ServerFacade {
 
     public void login(String username, String password) {
         var loginData = new LoginData(username,password);
-        var path = "/user";
+        var path = "/session";
         try{
-            this.makeRequest("POST", path, loginData, AuthResponse.class );
+            var response = this.makeRequest("POST", path, loginData, AuthResponse.class );
+            userAuthStored = response.authToken();
+
         } catch (ResponseException e){
             System.out.println("Sorry, your username/password combination were incorrect. Try again.");
             e.printStackTrace();
@@ -68,6 +86,17 @@ public class ServerFacade {
             http.setRequestMethod(method);
             http.setDoOutput(true);
 
+            if (request.getClass() == AuthToken.class){
+                String authRecord = new Gson().toJson(((AuthToken) request).authToken());
+                if (authRecord.charAt(0) == '\"'){
+                    authRecord = authRecord.substring(1);
+                }
+                if (authRecord.charAt(authRecord.length()-1) == '\"'){
+                    authRecord = authRecord.substring(0,authRecord.length()-1);
+                }
+                http.setRequestProperty("Authorization", authRecord);
+            }
+
             writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);
@@ -76,6 +105,7 @@ public class ServerFacade {
             throw new ResponseException(500, ex.getMessage());
         }
     }
+
 
 
     private static void writeBody(Object request, HttpURLConnection http) throws IOException {
