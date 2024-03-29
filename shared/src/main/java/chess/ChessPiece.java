@@ -261,4 +261,12 @@ public class ChessPiece {
         //its invalid
         return myPosition.getColumn() <= 8 && myPosition.getColumn() >= 1 && myPosition.getRow() <= 8 && myPosition.getRow() >= 1;
     }
+
+//    public String toString(){
+//        if (pieceColor == ChessGame.TeamColor.BLACK){
+//            if (pieceType == PieceType.PAWN){
+//                return ""
+//            }
+//        }
+//    }
 }
