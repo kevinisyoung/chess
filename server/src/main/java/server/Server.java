@@ -23,8 +23,8 @@ public class Server {
         Spark.delete("/session", serverHandlers::logoutHandler);
         Spark.get("/game", serverHandlers::listGamesHandler);
         Spark.post("/game", serverHandlers::createGameHandler);
-
         Spark.put("/game", serverHandlers::joinGameHandler);
+
         Spark.awaitInitialization();
         return Spark.port();
     }

@@ -198,6 +198,7 @@ public class ServerHandlers {
             gameService.joinGame(gameJoinRequest);
             res.status(200);
             return new Gson().toJson(new Object());
+
         } catch (DataAccessException e){
             res.status(403);
             return new Gson().toJson(Map.of("message", e.getMessage()));
