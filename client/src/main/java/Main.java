@@ -1,5 +1,7 @@
 import chess.ChessBoard;
 import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
 import model.GameData;
 import server.ServerFacade;
 
@@ -213,14 +215,72 @@ public class Main {
     }
 
     public static void printBoard(ChessBoard board){
+        final String ANSI_START = "\u001B[";
+        final String ANSI_RESET = "0";
+        final String ANSI_RED_FOREGROUND = "31";
+        final String ANSI_BLUE_FOREGROUND = "34";
+        final String ANSI_WHITE_BACKGROUND = "47";
+        final String ANSI_BLACK_BACKGROUND = "40";
+        final String ANSI_END = "m";
+
+
         String black_on_grey = "\u001b[30;100;1m";
         String[] header = {" ", "a", "b", "c", "d", "e", "f", "g", "h", " "};
 
-            System.out.println("\n");
+
+
+        System.out.println("\n");
+        //print header
         for (int i = 0; i < 10; i++){
-            //print header forward
             System.out.print(black_on_grey + " " + header[i] + " ");
         }
+        System.out.print(ANSI_START + ANSI_RESET + ANSI_END);
+        System.out.print("\n");
+        //print board
+        for (int row = 1; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (col == 0){
+                    System.out.print(black_on_grey + " " + row + " ");
+                    continue;
+                }
+                ChessPosition tempPos = new ChessPosition(row, col);
+                var tempPiece = board.getPiece(tempPos);
+                String letterToPrint = "";
+                String foreGroundToPrint;
+                if (tempPiece != null) {
+                    if (tempPiece.getPieceType() == ChessPiece.PieceType.PAWN) {
+                        letterToPrint = "P";
+                    }
+                    if (tempPiece.getPieceType() == ChessPiece.PieceType.ROOK) {
+                        letterToPrint = "R";
+                    }
+                    if (tempPiece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
+                        letterToPrint = "N";
+                    }
+                    if (tempPiece.getPieceType() == ChessPiece.PieceType.BISHOP) {
+                        letterToPrint = "B";
+                    }
+                    if (tempPiece.getPieceType() == ChessPiece.PieceType.KING) {
+                        letterToPrint = "K";
+                    }
+                    if (tempPiece.getPieceType() == ChessPiece.PieceType.QUEEN) {
+                        letterToPrint = "Q";
+                    }
+
+                    if (tempPiece.getTeamColor() == ChessGame.TeamColor.BLACK) {
+                        foreGroundToPrint = ANSI_RED_FOREGROUND;
+                    } else if (tempPiece.getTeamColor() == ChessGame.TeamColor.BLACK) {
+                        foreGroundToPrint = ANSI_RED_FOREGROUND;
+                    }
+                }
+//                System.out.print(ANSI_START + ANSI_" " + row + " ");
+
+//            System.out.println();
+            }
+                System.out.print(ANSI_RESET + "\n");
+        }
+
+
 
 //        System.out.println("\n");
 //        System.out.print(black_on_grey+"   ");
