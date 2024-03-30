@@ -238,15 +238,19 @@ public class Main {
         System.out.print("\n");
         //print board
         for (int row = 1; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                if (col == 0){
+            for (int col = 0; col < 10; col++) {
+                if (col == 0 || col == 9){
                     System.out.print(black_on_grey + " " + row + " ");
                     continue;
                 }
                 ChessPosition tempPos = new ChessPosition(row, col);
                 var tempPiece = board.getPiece(tempPos);
-                String letterToPrint = "";
-                String foreGroundToPrint;
+                String letterToPrint = " ";
+                String foreGroundToPrint = "";
+                String backgroundToPrint = ANSI_BLACK_BACKGROUND;
+                if ((row+col) % 2 == 0){
+                    backgroundToPrint = ANSI_WHITE_BACKGROUND;
+                }
                 if (tempPiece != null) {
                     if (tempPiece.getPieceType() == ChessPiece.PieceType.PAWN) {
                         letterToPrint = "P";
@@ -269,15 +273,16 @@ public class Main {
 
                     if (tempPiece.getTeamColor() == ChessGame.TeamColor.BLACK) {
                         foreGroundToPrint = ANSI_RED_FOREGROUND;
-                    } else if (tempPiece.getTeamColor() == ChessGame.TeamColor.BLACK) {
-                        foreGroundToPrint = ANSI_RED_FOREGROUND;
+                    } else if (tempPiece.getTeamColor() == ChessGame.TeamColor.WHITE) {
+                        foreGroundToPrint = ANSI_BLUE_FOREGROUND;
                     }
                 }
-//                System.out.print(ANSI_START + ANSI_" " + row + " ");
+
+                System.out.print(ANSI_START + foreGroundToPrint + ";" + backgroundToPrint + ANSI_END +" " + letterToPrint + " ");
 
 //            System.out.println();
             }
-                System.out.print(ANSI_RESET + "\n");
+                System.out.print(ANSI_START + ANSI_RESET + ANSI_END + "\n");
         }
 
 
