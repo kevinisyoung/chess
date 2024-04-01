@@ -52,18 +52,12 @@ public class ServerFacade {
         }
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password) throws ResponseException {
         var loginData = new LoginData(username,password);
         var path = "/session";
-        try{
-            var response = this.makeRequest("POST", path, loginData, AuthResponse.class );
-            setUserAuthStored(response.authToken());
-            setUsernameStored(response.username());
-
-        } catch (ResponseException e){
-            System.out.println("Sorry, your username/password combination were incorrect. Try again.");
-            e.printStackTrace();
-        }
+        var response = this.makeRequest("POST", path, loginData, AuthResponse.class );
+        setUserAuthStored(response.authToken());
+        setUsernameStored(response.username());
     }
 
 
@@ -120,6 +114,9 @@ public class ServerFacade {
                 http.setRequestProperty("authorization", authRecord);
             }
             else if (request.getClass() == GameJoinRequest.class){
+                http.setRequestProperty("authorization", userAuthStored);
+            }
+            else if (request.getClass() == GameRequest.class){
                 http.setRequestProperty("authorization", userAuthStored);
             }
             if (!method.equals("GET")) {

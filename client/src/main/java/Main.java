@@ -1,8 +1,10 @@
+import Exceptions.DataAccessException;
 import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import model.GameData;
+import server.ResponseException;
 import server.ServerFacade;
 
 import java.io.IOException;
@@ -22,8 +24,6 @@ public class Main {
             while (!isLoggedIn) {
                 System.out.println("\n\u001b[32mWelcome to chess. You are not logged in. Awaiting your input now, type \"help\" for possible commands.");
                 System.out.print("\n\u001b[39m[LOGGED_OUT] >>> ");
-                        printBoard(tempPhaseFiveBoard,true);
-                        printBoard(tempPhaseFiveBoard,false);
                 Scanner scanner = new Scanner(System.in);
                 String userInput = scanner.next();
                 userInput = userInput.toLowerCase();
@@ -52,11 +52,9 @@ public class Main {
                         // perform login function
                         try {
                             serverFacade.login(username, password);
-                            System.out.println("Login successful.");
                             isLoggedIn = true;
                         } catch (Exception e){
-                            e.printStackTrace();
-                            System.exit(0);
+                            System.out.println("Sorry, your username/password combination were incorrect.");
                         }
                         break;
                     case "register":
@@ -122,7 +120,7 @@ public class Main {
                         try {
                             System.out.println("Type game ID to join");
                             var gameID = scanner.nextInt();
-                            System.out.println("Type player color to join as (b = black, w = white");
+                            System.out.println("Type player color to join as (b = black, w = white, s = spectator)");
                             var colorInput = scanner.next();
                             ChessGame.TeamColor teamColor = null;
                             if (colorInput.equals("b")){
@@ -131,8 +129,13 @@ public class Main {
                             else if (colorInput.equals("w")){
                                  teamColor = ChessGame.TeamColor.WHITE;
                             }
+                            else if (colorInput.equals("s")){
+                                 teamColor = null;
+                            }
+
                             serverFacade.joinGame(gameID, teamColor);
                             System.out.println("Game joined. Welcome bro.");
+                            isLoggedIn = false;
                             isInGame = true;
 //                            currGame = serverFacade.getGame();
                         } catch (Exception e){
@@ -144,8 +147,12 @@ public class Main {
                         try {
                             System.out.println("Please enter your game's name:");
                             var gameName = scanner.next();
-                            serverFacade.createGame(gameName);
-                            //for loop to cycle through all games and print out name of each with a number next to it
+                            try {
+                                serverFacade.createGame(gameName);
+                                System.out.println("Game created. View game by typing \"games\"");
+                            } catch (ResponseException e){
+                                System.out.println("Sorry, something happened and this failed lol!");
+                            }
                         } catch (Exception e){
                             e.printStackTrace();
                         }
@@ -158,8 +165,10 @@ public class Main {
 //                ChessBoard tempPhaseFiveBoard = new ChessBoard();
 //                tempPhaseFiveBoard.resetBoard();
 //                printBoard(tempPhaseFiveBoard);
-                System.out.println("\n\u001b[32mWelcome to chess. You are not logged in. Awaiting your input now, type \"help\" for possible commands.");
-                System.out.print("\n\u001b[39m[LOGGED_OUT] >>> ");
+                System.out.println("\n\u001b[32m-*-*-*IN GAME*-*-*-");
+                System.out.print("\n\u001b[39m[IN_GAME] >>> ");
+                printBoard(tempPhaseFiveBoard, true);
+                printBoard(tempPhaseFiveBoard, false);
                 Scanner scanner = new Scanner(System.in);
                 String userInput = scanner.next();
                 userInput = userInput.toLowerCase();

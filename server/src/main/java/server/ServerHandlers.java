@@ -191,7 +191,6 @@ public class ServerHandlers {
                 res.status(400);
                 return new Gson().toJson(Map.of("message", "Error: game ID invalid"));
             }
-            //success
             //get username
             AuthData returnedAuthData = userAuthService.getAuth(authToken);
             GameJoinRequest gameJoinRequest = new GameJoinRequest(authToken, gameIDJoinRequest.playerColor(), gameIDJoinRequest.gameID(), returnedAuthData.username());

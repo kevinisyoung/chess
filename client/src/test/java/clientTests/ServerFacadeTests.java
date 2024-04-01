@@ -36,14 +36,18 @@ public class ServerFacadeTests {
     @Test
     public void testLogoutCorrect() {
 //        serverFacade.register("newUser","newPassword", "newEmail");
-        serverFacade.login("joe","joe");
+        try{serverFacade.login("joe","joe");}
+        catch (Exception e){
+            e.printStackTrace();
+        }
         Assertions.assertDoesNotThrow(() -> serverFacade.logout());
     }
 
     @Test
     public void listGamesCorrect() {
 //        serverFacade.register("newUser","newPassword", "newEmail");
-        serverFacade.login("joe","joe");
+        try {serverFacade.login("joe","joe");}
+        catch (Exception e){e.printStackTrace();}
         var games = Assertions.assertDoesNotThrow(() -> serverFacade.listGames());
         Assertions.assertEquals(1,games.size());
         int iteration = 0;
