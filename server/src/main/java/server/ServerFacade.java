@@ -29,17 +29,6 @@ public class ServerFacade {
 //        var path = "/pet";
 //        return this.makeRequest("POST", path, pet, Pet.class);
 //    }
-
-    public void logout() {
-        var path = "/session";
-        var authTokenRecord = new AuthToken(userAuthStored);
-        try{
-            this.makeRequest("DELETE", path, authTokenRecord, authTokenRecord.getClass());
-        } catch (ResponseException e){
-            e.printStackTrace();
-        }
-    }
-
     public void register(String username, String password, String email) {
         UserData registerData = new UserData(username,password,email);
         var path = "/user";
@@ -60,12 +49,15 @@ public class ServerFacade {
         setUsernameStored(response.username());
     }
 
-
-    public void deleteEverything() throws ResponseException {
-        var path = "/db";
-        this.makeRequest("DELETE", path, null, null);
+    public void logout() {
+        var path = "/session";
+        var authTokenRecord = new AuthToken(userAuthStored);
+        try{
+            this.makeRequest("DELETE", path, authTokenRecord, authTokenRecord.getClass());
+        } catch (ResponseException e){
+            e.printStackTrace();
+        }
     }
-
     public HashSet<GameData> listGames() throws ResponseException {
         var path = "/game";
 
@@ -78,15 +70,7 @@ public class ServerFacade {
         }
         return null;
     }
-    public void joinGame(int gameID, ChessGame.TeamColor teamColor) throws ResponseException {
-        var path = "/game";
-        try{
-            var gameJoinRequest = new GameJoinRequest(userAuthStored,teamColor,gameID,usernameStored);
-            this.makeRequest("PUT", path, gameJoinRequest, GameResponse.class);
-        } catch (ResponseException e){
-            e.printStackTrace();
-        }
-    }
+
     public void createGame(String gameName) throws ResponseException {
         var path = "/game";
         try{
@@ -96,6 +80,22 @@ public class ServerFacade {
             e.printStackTrace();
         }
     }
+    public void joinGame(int gameID, ChessGame.TeamColor teamColor) throws ResponseException {
+        var path = "/game";
+        try{
+            var gameJoinRequest = new GameJoinRequest(userAuthStored,teamColor,gameID,usernameStored);
+            this.makeRequest("PUT", path, gameJoinRequest, GameResponse.class);
+        } catch (ResponseException e){
+            e.printStackTrace();
+        }
+    }
+
+//
+//    public void deleteEverything() throws ResponseException {
+//        var path = "/db";
+//        this.makeRequest("DELETE", path, null, null);
+//    }
+
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
         try {

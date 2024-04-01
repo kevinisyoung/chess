@@ -6,11 +6,15 @@ import server.ResponseException;
 import server.Server;
 import server.ServerFacade;
 
+import java.util.UUID;
+
 
 public class ServerFacadeTests {
 
     private static Server server;
     private static ServerFacade serverFacade;
+
+    static String testUsername;
 
 
     @BeforeAll
@@ -19,6 +23,7 @@ public class ServerFacadeTests {
         var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
         serverFacade = new ServerFacade("http://localhost:"+port);
+        testUsername = UUID.randomUUID().toString();
     }
 
     @AfterAll
@@ -33,10 +38,12 @@ public class ServerFacadeTests {
     }
 
 
+
+
     @Test
     public void testLogoutCorrect() {
-//        serverFacade.register("newUser","newPassword", "newEmail");
-        try{serverFacade.login("joe","joe");}
+        serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL");
+        try{serverFacade.login(testUsername,"TESTPASSWORD");}
         catch (Exception e){
             e.printStackTrace();
         }

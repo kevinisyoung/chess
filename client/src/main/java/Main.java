@@ -131,8 +131,8 @@ public class Main {
                             }
                             else if (colorInput.equals("s")){
                                  teamColor = null;
+                                System.out.println("Game joined as spectator.");
                             }
-
                             serverFacade.joinGame(gameID, teamColor);
                             System.out.println("Game joined. Welcome bro.");
                             isLoggedIn = false;
