@@ -22,7 +22,8 @@ public class Main {
             while (!isLoggedIn) {
                 System.out.println("\n\u001b[32mWelcome to chess. You are not logged in. Awaiting your input now, type \"help\" for possible commands.");
                 System.out.print("\n\u001b[39m[LOGGED_OUT] >>> ");
-                        printBoard(tempPhaseFiveBoard);
+                        printBoard(tempPhaseFiveBoard,true);
+                        printBoard(tempPhaseFiveBoard,false);
                 Scanner scanner = new Scanner(System.in);
                 String userInput = scanner.next();
                 userInput = userInput.toLowerCase();
@@ -36,7 +37,7 @@ public class Main {
                         System.out.print("--HELP MENU:--\n\"Register\": Create account\n\"Login\": Log into account\n\"Quit\": Exit the program");
                         break;
                     case "print":
-                        printBoard(tempPhaseFiveBoard);
+                        printBoard(tempPhaseFiveBoard, true);
                         break;
                     case "quit":
                         System.exit(0);
@@ -214,7 +215,7 @@ public class Main {
         }
     }
 
-    public static void printBoard(ChessBoard board){
+    public static void printBoard(ChessBoard board, boolean isWhitePOV){
         final String ANSI_START = "\u001B[";
         final String ANSI_RESET = "0";
         final String ANSI_RED_FOREGROUND = "31";
@@ -227,18 +228,24 @@ public class Main {
         String black_on_grey = "\u001b[30;100;1m";
         String[] header = {" ", "a", "b", "c", "d", "e", "f", "g", "h", " "};
 
-
-
         System.out.println("\n");
         //print header
-        for (int i = 0; i < 10; i++){
+        int startRow = isWhitePOV ? 1 : 8;
+        int endRow = isWhitePOV ? 9 : 0;
+        int rowIncrement = isWhitePOV ? 1 : -1;
+
+        int startCol = isWhitePOV ? 0 : 9;
+        int endCol = isWhitePOV ? 10 : -1;
+        int colIncrement = isWhitePOV ? 1 : -1;
+
+        for (int i = startCol; i != endCol; i+=colIncrement){
             System.out.print(black_on_grey + " " + header[i] + " ");
         }
         System.out.print(ANSI_START + ANSI_RESET + ANSI_END);
         System.out.print("\n");
         //print board
-        for (int row = 1; row < 9; row++) {
-            for (int col = 0; col < 10; col++) {
+        for (int row = startRow; row != endRow; row += rowIncrement) {
+            for (int col = startCol; col != endCol; col += colIncrement) {
                 if (col == 0 || col == 9){
                     System.out.print(black_on_grey + " " + row + " ");
                     continue;
@@ -277,46 +284,14 @@ public class Main {
                         foreGroundToPrint = ANSI_BLUE_FOREGROUND;
                     }
                 }
-
                 System.out.print(ANSI_START + foreGroundToPrint + ";" + backgroundToPrint + ANSI_END +" " + letterToPrint + " ");
-
-//            System.out.println();
             }
                 System.out.print(ANSI_START + ANSI_RESET + ANSI_END + "\n");
         }
-
-
-
-//        System.out.println("\n");
-//        System.out.print(black_on_grey+"   ");
-//        System.out.print(black_on_grey+" h ");
-//        System.out.print(black_on_grey+" g ");
-//        System.out.print(black_on_grey+" f ");
-//        System.out.print(black_on_grey+" e ");
-//        System.out.print(black_on_grey+" d ");
-//        System.out.print(black_on_grey+" c ");
-//        System.out.print(black_on_grey+" b ");
-//        System.out.print(black_on_grey+" a ");
-//        System.out.print(black_on_grey+"   ");
-
-//        StringBuilder stringBuilder = new StringBuilder();
-//        //top of board
-//        stringBuilder.append("\u001b[31;44;1m ");
-//        stringBuilder.append("\u001b[31;44;1m ");
-//        for (int i = 0; i < 8; i++){
-//            stringBuilder.append(8 - i).append(" ");
-//            for (int j = 0; j < 8; j++) {
-//                ChessPosition position = new ChessPosition(i, j);
-//                ChessPiece piece = board.getPiece(position);
-//                if (piece == null) {
-//                    stringBuilder.append("- ");
-//                } else {
-//                    stringBuilder.append(piece.).append(" ");
-//                }
-//            }
-//            stringBuilder.append("\n");
-//        }
-
-//        return stringBuilder.toString();
+        //print footer
+        for (int i = startCol; i != endCol; i+=colIncrement){
+            System.out.print(black_on_grey + " " + header[i] + " ");
+        }
+        System.out.print(ANSI_START + ANSI_RESET + ANSI_END + "\n");
     }
 }
