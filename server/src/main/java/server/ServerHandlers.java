@@ -122,28 +122,23 @@ public class ServerHandlers {
             An authToken is required to call this endpoint.
          */
     }
-    public Object listGamesHandler(Request req, Response res){
+    public Object listGamesHandler(Request req, Response res) throws DataAccessException {
         System.out.println("listGamesHandler called");
-        try {
             String authToken = req.headers("authorization");
 
             if (userAuthService.getAuth(authToken) == null){
                 res.status(401);
                 return new Gson().toJson(Map.of("message", "Error: User logged in improperly"));
             }
-
             GamesList gamesList = gameService.listGames();
             return new Gson().toJson(gamesList);
-        } catch (Exception e){
 
-        }
         /*
         Lists all the games in the database
             This API does not take a request body.
             The response JSON lists all the games, including the board.
             An authToken is required to call this endpoint.
          */
-        return null;
     }
     public Object createGameHandler(Request req, Response res){
         System.out.println("createGame called");
@@ -191,13 +186,13 @@ public class ServerHandlers {
                 res.status(400);
                 return new Gson().toJson(Map.of("message", "Error: game ID invalid"));
             }
+            //success
             //get username
             AuthData returnedAuthData = userAuthService.getAuth(authToken);
             GameJoinRequest gameJoinRequest = new GameJoinRequest(authToken, gameIDJoinRequest.playerColor(), gameIDJoinRequest.gameID(), returnedAuthData.username());
             gameService.joinGame(gameJoinRequest);
             res.status(200);
             return new Gson().toJson(new Object());
-
         } catch (DataAccessException e){
             res.status(403);
             return new Gson().toJson(Map.of("message", e.getMessage()));

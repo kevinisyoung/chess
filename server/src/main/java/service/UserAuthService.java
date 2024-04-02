@@ -48,9 +48,6 @@ public class UserAuthService {
         return new AuthData(generatedAuth, user.username());
     }
     public void logout(String authToken) throws DataAccessException {
-        if (DAO.getAuth(authToken) == null){
-            throw new DataAccessException("Error: user not found");
-        }
         DAO.removeAuth(authToken);
     }
 
@@ -63,8 +60,12 @@ public class UserAuthService {
         return UUID.randomUUID().toString();
     }
 
-    public AuthData getAuth(String authToken){
-        return DAO.getAuth(authToken);
+    public AuthData getAuth(String authToken) throws DataAccessException {
+        var result = DAO.getAuth(authToken);
+        if (result == null){
+            throw new DataAccessException("Error: user not found");
+        }
+        return result;
     }
 
 

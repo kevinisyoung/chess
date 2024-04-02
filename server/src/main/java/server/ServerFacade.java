@@ -29,16 +29,12 @@ public class ServerFacade {
 //        var path = "/pet";
 //        return this.makeRequest("POST", path, pet, Pet.class);
 //    }
-    public void register(String username, String password, String email) {
+    public void register(String username, String password, String email) throws ResponseException {
         UserData registerData = new UserData(username,password,email);
         var path = "/user";
-        try{
-            var response = this.makeRequest("POST", path, registerData, AuthResponse.class );
-            setUserAuthStored(response.authToken());
-            setUsernameStored(response.username());
-        } catch (ResponseException e){
-            e.printStackTrace();
-        }
+        var response = this.makeRequest("POST", path, registerData, AuthResponse.class );
+        setUserAuthStored(response.authToken());
+        setUsernameStored(response.username());
     }
 
     public void login(String username, String password) throws ResponseException {
@@ -49,36 +45,26 @@ public class ServerFacade {
         setUsernameStored(response.username());
     }
 
-    public void logout() {
+    public void logout() throws ResponseException {
         var path = "/session";
         var authTokenRecord = new AuthToken(userAuthStored);
-        try{
-            this.makeRequest("DELETE", path, authTokenRecord, authTokenRecord.getClass());
-        } catch (ResponseException e){
-            e.printStackTrace();
-        }
+        this.makeRequest("DELETE", path, authTokenRecord, authTokenRecord.getClass());
+        usernameStored = "";
+        userAuthStored = "";
+    }
+
+    public int createGame(String gameName) throws ResponseException {
+        var path = "/game";
+            var gameRequest = new GameRequest(userAuthStored,gameName);
+            var gameAnswer = this.makeRequest("POST", path, gameRequest, GameResponse.class);
+            return gameAnswer.gameID();
     }
     public HashSet<GameData> listGames() throws ResponseException {
         var path = "/game";
 
         var authTokenRecord = new AuthToken(userAuthStored);
-        try{
-            var response = this.makeRequest("GET", path, authTokenRecord, GamesList.class);
-            return response.games();
-        } catch (ResponseException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void createGame(String gameName) throws ResponseException {
-        var path = "/game";
-        try{
-            var gameRequest = new GameRequest(userAuthStored,gameName);
-            this.makeRequest("POST", path, gameRequest, GameResponse.class);
-        } catch (ResponseException e){
-            e.printStackTrace();
-        }
+        var response = this.makeRequest("GET", path, authTokenRecord, GamesList.class);
+        return response.games();
     }
     public void joinGame(int gameID, ChessGame.TeamColor teamColor) throws ResponseException {
         var path = "/game";
