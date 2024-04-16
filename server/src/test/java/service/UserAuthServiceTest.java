@@ -1,18 +1,5 @@
 package service;
 
-import Exceptions.DataAccessException;
-import Exceptions.UserAlreadyExistsException;
-import additionalRecords.GameRequest;
-import additionalRecords.LoginData;
-import model.AuthData;
-import model.UserData;
-import org.junit.jupiter.api.Test;
-import server.Server;
-
-import java.util.HashSet;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class MemoryUserAuthServiceTest {
 //
 //    @Test

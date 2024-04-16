@@ -1,14 +1,5 @@
 package service;
 
-import Exceptions.DataAccessException;
-import Exceptions.UserAlreadyExistsException;
-import additionalRecords.GameRequest;
-import model.AuthData;
-import model.UserData;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class GameServiceTest {
 
 //    @Test

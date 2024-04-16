@@ -2,9 +2,7 @@ package dataAccess;
 
 import Exceptions.DataAccessException;
 import additionalRecords.GameJoinRequest;
-import additionalRecords.GamesList;
 import chess.ChessGame;
-import model.AuthData;
 import model.GameData;
 
 import java.util.HashSet;

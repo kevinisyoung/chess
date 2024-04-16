@@ -160,8 +160,8 @@ public class ServerHandlers {
             res.status(200);
             return new Gson().toJson(gameService.createGame(gameRequest));
         } catch (Exception e){
-            res.status(500);
-            return new Gson().toJson(Map.of("message", e.getMessage()));
+            res.status(401);
+            return new Gson().toJson(Map.of("message", "Error: User logged in improperly"));
         }
 
         /*

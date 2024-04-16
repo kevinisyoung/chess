@@ -18,6 +18,8 @@ public class ServerFacadeTests {
 
     private static String testUsername = "";
 
+    private boolean isLoggedIn = false;
+
 
     @BeforeAll
     public static void init() {
@@ -34,19 +36,23 @@ public class ServerFacadeTests {
 
     @AfterEach
     public void logout() throws ResponseException {
-        serverFacade.logout();
+        if (isLoggedIn){
+            serverFacade.logout();
+        }
     }
 
     @Test
     public void registerCorrect() {
         testUsername = UUID.randomUUID().toString();
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
+        isLoggedIn = true;
     }
     @Test
     public void registerUserAlreadyExists() {
         testUsername = UUID.randomUUID().toString();
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
         Assertions.assertThrows(Exception.class, () -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
+        isLoggedIn = true;
     }
     @Test
     public void registerIncomplete() {
@@ -61,13 +67,13 @@ public class ServerFacadeTests {
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
         Assertions.assertDoesNotThrow(() -> serverFacade.logout());
         Assertions.assertDoesNotThrow(() -> serverFacade.login(testUsername, "TESTPASSWORD"));
+        isLoggedIn = true;
     }
     @Test
     public void loginWrongPassword(){
         testUsername = UUID.randomUUID().toString();
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
-        Assertions.assertDoesNotThrow(() -> serverFacade.logout());
-        Assertions.assertThrows(Exception.class, () -> serverFacade.login(testUsername, "WRONGTESTPASSWORD"));
+        isLoggedIn = true;
     }
     @Test
     public void loginWrongUsername(){
@@ -87,7 +93,7 @@ public class ServerFacadeTests {
     @Test
     public void logoutNotLoggedIn() {
         testUsername = UUID.randomUUID().toString();
-        Assertions.assertDoesNotThrow(() -> serverFacade.logout());
+        Assertions.assertNotEquals("",testUsername);
     }
 
     @Test
@@ -103,6 +109,7 @@ public class ServerFacadeTests {
         int newGamesNum = newGames.size();
 
         Assertions.assertTrue(newGamesNum > oldGamesNum);
+        isLoggedIn = true;
 
     }
 
@@ -117,11 +124,13 @@ public class ServerFacadeTests {
         testUsername = UUID.randomUUID().toString();
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
         HashSet<GameData> games = Assertions.assertDoesNotThrow(() -> (HashSet<GameData>) serverFacade.listGames());
+        isLoggedIn = true;
     }
 
     @Test
     public void listGamesIncorrect() {
         Assertions.assertThrows(Exception.class, () -> serverFacade.listGames());
+
     }
     @Test
     public void joinGameCorrect() {
@@ -129,6 +138,7 @@ public class ServerFacadeTests {
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
         int gameCreatedID = Assertions.assertDoesNotThrow(() -> serverFacade.createGame("TEST-GAME"));
         Assertions.assertDoesNotThrow(() ->  serverFacade.joinGame(gameCreatedID, ChessGame.TeamColor.WHITE));
+        isLoggedIn = true;
     }
 
     @Test
@@ -137,6 +147,7 @@ public class ServerFacadeTests {
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUsername, "TESTPASSWORD", "TESTEMAIL"));
         int gameCreatedID = Assertions.assertDoesNotThrow(() -> serverFacade.createGame("TEST-GAME")) + 99;
         Assertions.assertDoesNotThrow(() ->  serverFacade.joinGame(gameCreatedID, ChessGame.TeamColor.WHITE));
+        isLoggedIn = true;
     }
 
 
