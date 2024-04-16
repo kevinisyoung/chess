@@ -76,13 +76,6 @@ public class ServerFacade {
         }
     }
 
-//
-//    public void deleteEverything() throws ResponseException {
-//        var path = "/db";
-//        this.makeRequest("DELETE", path, null, null);
-//    }
-
-
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
