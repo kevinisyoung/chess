@@ -179,9 +179,6 @@ public class Main {
 
             }
             while (isInGame) {
-//                ChessBoard tempPhaseFiveBoard = new ChessBoard();
-//                tempPhaseFiveBoard.resetBoard();
-//                printBoard(tempPhaseFiveBoard);
                 System.out.println("\n\u001b[32m-*-*-*IN GAME*-*-*-");
                 System.out.print("\n\u001b[39m[IN_GAME] >>> ");
                 printBoard(tempPhaseFiveBoard, true);

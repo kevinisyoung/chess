@@ -28,11 +28,6 @@ public class DatabaseGameDao implements GameDAO{
         }
     }
 
-    public static void makeSQLCalls() throws SQLException, DataAccessException {
-        try (var conn = DatabaseManager.getConnection()) {
-            // Execute SQL statements on the connection here
-        }
-    }
 
     static void configureGameDatabase() throws SQLException, DataAccessException {
         DatabaseManager.createDatabase();

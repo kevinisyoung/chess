@@ -6,31 +6,32 @@ import dataAccess.DatabaseGameDao;
 import model.GameData;
 
 public class GameService {
-    DatabaseGameDao DAO;
+    DatabaseGameDao Dao;
     int gameIDIncrementer = 0;
     public GameService() {
-        DAO = new DatabaseGameDao();
+        Dao = new DatabaseGameDao();
     }
     public void clearAll(){
-        DAO.clearAll();
+        Dao.clearAll();
     }
 
     public GamesList listGames(){
-        return new GamesList(DAO.getGames());
+        return new GamesList(Dao.getGames());
     }
 
 
 
     public GameResponse createGame(GameRequest gameInfo){
-        int currentId = DAO.getGames().size() + 1;
+        int currentId = Dao.getGames().size() + 1;
         GameData gameData = new GameData(currentId, null, null, gameInfo.gameName(), null);
-        DAO.createGame(gameData);
+        Dao.createGame(gameData);
 
         return new GameResponse(currentId);
     }
 
     public void joinGame(GameJoinRequest gameJoinRequest) throws DataAccessException {
-        try {DAO.updateGame(gameJoinRequest);}
+        try {
+            Dao.updateGame(gameJoinRequest);}
         catch (DataAccessException e){
             throw new DataAccessException("error: " + e.getMessage());
         }
