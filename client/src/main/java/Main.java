@@ -1,4 +1,3 @@
-import Exceptions.DataAccessException;
 import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
@@ -10,7 +9,6 @@ import server.ServerFacade;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
