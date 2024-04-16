@@ -62,7 +62,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
 
 
     @Override
-    public AuthData getAuth(String authToken) {
+    public AuthData getAuth(String authToken) throws DataAccessException {
         String usernameRecieved = null;
         String authTokenRecieved = null;
 
@@ -78,7 +78,7 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
                 }
             }
         } catch (SQLException | DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException();
         }
         if (authTokenRecieved == null || usernameRecieved == null){
             return null;
@@ -103,13 +103,16 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
     @Override
     public void removeAuth(String authToken) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
+            if (getAuth(authToken) == null){
+                throw new DataAccessException("Error: There was no auth found there");
+            }
             conn.setCatalog(DatabaseManager.getConnection().getCatalog());
             try (var preparedStatement = conn.prepareStatement("DELETE FROM auth WHERE authToken=?;")) {
                 preparedStatement.setString(1,authToken);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException | DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException();
         }
     }
 

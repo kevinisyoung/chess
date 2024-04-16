@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DatabaseUserAuthDAOTest {
 
     @Test
-    void getAuth() {
+    void getAuth() throws DataAccessException {
         DatabaseUserAuthDAO testDAO = new DatabaseUserAuthDAO();
 
         var testUsername = UUID.randomUUID().toString();

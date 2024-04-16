@@ -23,11 +23,6 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-
-//    public Game getGame(Game game) throws ResponseException {
-//        var path = "/pet";
-//        return this.makeRequest("POST", path, pet, Pet.class);
-//    }
     public void register(String username, String password, String email) throws ResponseException {
         UserData registerData = new UserData(username,password,email);
         var path = "/user";

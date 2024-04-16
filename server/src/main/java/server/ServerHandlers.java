@@ -109,13 +109,12 @@ public class ServerHandlers {
         try {
             authToken = req.headers("authorization");
             //success
-
             userAuthService.logout(authToken);
             res.status(200);
             return new Gson().toJson(new Object());
         } catch (DataAccessException e){
             res.status(401);
-            return new Gson().toJson(Map.of("message", e.getMessage()));
+            return new Gson().toJson(Map.of("message", "Error: Logout failed"));
         }
         /*
         Logs out an authenticated user
