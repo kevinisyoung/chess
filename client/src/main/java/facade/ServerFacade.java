@@ -1,6 +1,5 @@
-package server;
+package facade;
 
-import Exceptions.DataAccessException;
 import additionalRecords.*;
 import chess.ChessGame;
 import com.google.gson.Gson;

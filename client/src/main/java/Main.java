@@ -3,8 +3,8 @@ import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import model.GameData;
-import server.ResponseException;
-import server.ServerFacade;
+import facade.ResponseException;
+import facade.ServerFacade;
 
 import java.io.IOException;
 import java.util.HashMap;

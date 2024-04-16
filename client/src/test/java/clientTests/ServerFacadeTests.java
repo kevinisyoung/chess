@@ -3,9 +3,9 @@ package clientTests;
 import chess.ChessGame;
 import model.GameData;
 import org.junit.jupiter.api.*;
-import server.ResponseException;
+import facade.ResponseException;
 import server.Server;
-import server.ServerFacade;
+import facade.ServerFacade;
 
 import java.util.HashSet;
 import java.util.UUID;
