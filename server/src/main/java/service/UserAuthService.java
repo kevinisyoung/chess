@@ -12,30 +12,30 @@ import java.util.UUID;
 
 public class UserAuthService {
 
-    DatabaseUserAuthDAO Dao;
+    DatabaseUserAuthDAO dao;
 
 
     public UserAuthService(){
-        Dao = new DatabaseUserAuthDAO();
+        dao = new DatabaseUserAuthDAO();
     }
     public AuthData register(UserData user) throws UserAlreadyExistsException, DataAccessException {
 
         //verify no username exists in DB
-        if (Dao.getUser(user.username()).username() != null){
+        if (dao.getUser(user.username()).username() != null){
             throw new UserAlreadyExistsException("Error: already taken");
         }
 
-        Dao.insertUser(user);
+        dao.insertUser(user);
         //have auth dao create auth token and insert that
         return login(new LoginData(user.username(), user.password()));
     }
     public AuthData login(LoginData user) throws DataAccessException {
         //verify user exists
-        if (Dao.getUser(user.username()) == null || Dao.getUser(user.username()).username() == null){
+        if (dao.getUser(user.username()) == null || dao.getUser(user.username()).username() == null){
             throw new DataAccessException("error: Unauthorized");
         }
-        var testLoginResult = Dao.getUser(user.username());
-        if (!Dao.getUser(user.username()).password().equals(user.password())){
+        var testLoginResult = dao.getUser(user.username());
+        if (!dao.getUser(user.username()).password().equals(user.password())){
             throw new DataAccessException("error: Wrong password");
         }
 
@@ -44,15 +44,15 @@ public class UserAuthService {
         //create new AuthData using that authtoken
 
         String generatedAuth = generateAuth();
-        Dao.insertAuth(user.username(),generatedAuth);
+        dao.insertAuth(user.username(),generatedAuth);
         return new AuthData(generatedAuth, user.username());
     }
     public void logout(String authToken) throws DataAccessException {
-        Dao.removeAuth(authToken);
+        dao.removeAuth(authToken);
     }
 
     public void clearAll(){
-        Dao.clearAll();
+        dao.clearAll();
     }
 
 
@@ -61,7 +61,7 @@ public class UserAuthService {
     }
 
     public AuthData getAuth(String authToken) throws DataAccessException {
-        var result = Dao.getAuth(authToken);
+        var result = dao.getAuth(authToken);
         return result;
     }
 
