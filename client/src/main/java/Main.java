@@ -221,37 +221,22 @@ public class Main {
                             System.exit(0);
                         }
                         break;
-                    case "register":
-                        System.out.println("Enter the following information: <username> <password> <email>");
-                        username = scanner.next();
-                        password = scanner.next();
-                        email = scanner.next();
-                        System.out.println("Username: " + username + ", Password: " + password + ", Email: " + email);
-                        // perform register function
-                        try {
-                            serverFacade.register(username, password,email);
-                            System.out.println("Registration and login successful.");
-                            isLoggedIn = true;
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        break;
                 }
             }
         }
     }
 
     public static void printBoard(ChessBoard board, boolean isWhitePOV){
-        final String ANSI_START = "\u001B[";
-        final String ANSI_RESET = "0";
-        final String ANSI_RED_FOREGROUND = "31";
-        final String ANSI_BLUE_FOREGROUND = "34";
-        final String ANSI_WHITE_BACKGROUND = "47";
-        final String ANSI_BLACK_BACKGROUND = "40";
-        final String ANSI_END = "m";
+        final String ansiStart = "\u001B[";
+        final String ansiReset = "0";
+        final String ansiRedForeground = "31";
+        final String ansiBlueForeground = "34";
+        final String ansiWhiteBackground = "47";
+        final String ansiBlackBackground = "40";
+        final String ansiEnd = "m";
 
 
-        String black_on_grey = "\u001b[30;100;1m";
+        String blackOnGrey = "\u001b[30;100;1m";
         String[] header = {" ", "a", "b", "c", "d", "e", "f", "g", "h", " "};
 
         System.out.println("\n");
@@ -271,24 +256,24 @@ public class Main {
 
 
         for (int i = startCol; i != endCol; i+=colIncrement){
-            System.out.print(black_on_grey + " " + header[i] + " ");
+            System.out.print(blackOnGrey + " " + header[i] + " ");
         }
-        System.out.print(ANSI_START + ANSI_RESET + ANSI_END);
+        System.out.print(ansiStart + ansiReset + ansiEnd);
         System.out.print("\n");
         //print board
         for (int row = startRow; row != endRow; row += rowIncrement) {
             for (int col = startCol; col != endCol; col += colIncrement) {
                 if (col == 0 || col == 9){
-                    System.out.print(black_on_grey + " " + row + " ");
+                    System.out.print(blackOnGrey + " " + row + " ");
                     continue;
                 }
                 ChessPosition tempPos = new ChessPosition(row, col);
                 var tempPiece = board.getPiece(tempPos);
                 String letterToPrint = " ";
                 String foreGroundToPrint = "";
-                String backgroundToPrint = ANSI_WHITE_BACKGROUND;
+                String backgroundToPrint = ansiWhiteBackground;
                 if ((row+col) % 2 == 0){
-                    backgroundToPrint = ANSI_BLACK_BACKGROUND;
+                    backgroundToPrint = ansiBlackBackground;
                 }
                 if (tempPiece != null) {
                     if (tempPiece.getPieceType() == ChessPiece.PieceType.PAWN) {
@@ -311,19 +296,19 @@ public class Main {
                     }
 
                     if (tempPiece.getTeamColor() == ChessGame.TeamColor.BLACK) {
-                        foreGroundToPrint = ANSI_RED_FOREGROUND;
+                        foreGroundToPrint = ansiRedForeground;
                     } else if (tempPiece.getTeamColor() == ChessGame.TeamColor.WHITE) {
-                        foreGroundToPrint = ANSI_BLUE_FOREGROUND;
+                        foreGroundToPrint = ansiBlueForeground;
                     }
                 }
-                System.out.print(ANSI_START + foreGroundToPrint + ";" + backgroundToPrint + ANSI_END +" " + letterToPrint + " ");
+                System.out.print(ansiStart + foreGroundToPrint + ";" + backgroundToPrint + ansiEnd +" " + letterToPrint + " ");
             }
-                System.out.print(ANSI_START + ANSI_RESET + ANSI_END + "\n");
+                System.out.print(ansiStart + ansiReset + ansiEnd + "\n");
         }
         //print footer
         for (int i = startCol; i != endCol; i+=colIncrement){
-            System.out.print(black_on_grey + " " + header[i] + " ");
+            System.out.print(blackOnGrey + " " + header[i] + " ");
         }
-        System.out.print(ANSI_START + ANSI_RESET + ANSI_END + "\n");
+        System.out.print(ansiStart + ansiReset + ansiEnd + "\n");
     }
 }

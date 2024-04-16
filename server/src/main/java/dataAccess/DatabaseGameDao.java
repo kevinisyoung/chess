@@ -9,9 +9,9 @@ import model.GameData;
 import java.sql.SQLException;
 import java.util.HashSet;
 
-public class DatabaseGameDAO implements GameDAO{
+public class DatabaseGameDao implements GameDAO{
 
-    public DatabaseGameDAO() {
+    public DatabaseGameDao() {
         try{
             configureGameDatabase();
         } catch (SQLException | DataAccessException e){

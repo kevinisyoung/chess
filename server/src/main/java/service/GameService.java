@@ -2,19 +2,14 @@ package service;
 
 import Exceptions.DataAccessException;
 import additionalRecords.*;
-import dataAccess.DatabaseGameDAO;
-import dataAccess.GameDAO;
-import dataAccess.MemoryGameDAO;
-import dataAccess.MemoryUserAuthDAO;
+import dataAccess.DatabaseGameDao;
 import model.GameData;
 
-import java.sql.SQLException;
-
 public class GameService {
-    DatabaseGameDAO DAO;
+    DatabaseGameDao DAO;
     int gameIDIncrementer = 0;
     public GameService() {
-        DAO = new DatabaseGameDAO();
+        DAO = new DatabaseGameDao();
     }
     public void clearAll(){
         DAO.clearAll();

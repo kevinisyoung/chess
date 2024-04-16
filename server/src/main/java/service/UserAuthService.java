@@ -62,9 +62,6 @@ public class UserAuthService {
 
     public AuthData getAuth(String authToken) throws DataAccessException {
         var result = DAO.getAuth(authToken);
-//        if (result == null){
-//            throw new DataAccessException("Error: user not found");
-//        }
         return result;
     }
 

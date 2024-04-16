@@ -2,7 +2,7 @@ package dataAccessTests;
 
 import Exceptions.DataAccessException;
 import chess.ChessGame;
-import dataAccess.DatabaseGameDAO;
+import dataAccess.DatabaseGameDao;
 import model.GameData;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ class dataAccessTests {
 
     @Test
     void createGameGetGameTest() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -30,7 +30,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest5() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -41,7 +41,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest4() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -52,7 +52,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest3() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -63,7 +63,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest2() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -74,7 +74,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest1() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -85,7 +85,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest10() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -96,7 +96,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest9() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -107,7 +107,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest8() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -118,7 +118,7 @@ class dataAccessTests {
     }
     @Test
     void createGameGetGameTest7() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -128,7 +128,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest76() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -138,7 +138,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest75() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -148,7 +148,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest74() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -158,7 +158,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest73() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -168,7 +168,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest72() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -178,7 +178,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest71() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -188,7 +188,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest79() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -198,7 +198,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest78() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();
@@ -208,7 +208,7 @@ class dataAccessTests {
         assertNotNull(testDAO.getGame(1));
     }
     void createGameGetGameTest77() throws SQLException, DataAccessException {
-        var testDAO = new DatabaseGameDAO();
+        var testDAO = new DatabaseGameDao();
 
         var gameName = UUID.randomUUID().toString();
         var testGame = new ChessGame();

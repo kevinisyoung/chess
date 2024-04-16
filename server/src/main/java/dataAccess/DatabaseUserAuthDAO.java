@@ -171,16 +171,4 @@ public class DatabaseUserAuthDAO implements UserAuthDAO{
         }
     }
 
-    static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "password");
-    }
-
-    public static void makeSQLCalls() throws SQLException {
-        try (var conn = getConnection()) {
-            // Execute SQL statements on the connection here
-        }
-    }
-
-
-
 }
