@@ -8,7 +8,9 @@ import server.ResponseException;
 import server.ServerFacade;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -19,6 +21,8 @@ public class Main {
         ServerFacade serverFacade = new ServerFacade("http://localhost:8080");
         ChessBoard tempPhaseFiveBoard = new ChessBoard();
         tempPhaseFiveBoard.resetBoard();
+        HashMap<Integer, Integer> actualIDs = new HashMap<Integer, Integer>();
+
 
         while (true) {
             while (!isLoggedIn) {
@@ -83,13 +87,14 @@ public class Main {
                 userInput = userInput.toLowerCase();
                 String responseOutput = "";
 
+
                 String password;
                 String email;
 
                 switch (userInput) {
                     case "help":
                         System.out.print("\u001b[34m");
-                        System.out.print("--HELP MENU:--\n\"Register\": Create account\n\"Logout\": Log out of account\n\"Quit\": Exit the program");
+                        System.out.print("--HELP MENU:--\n\"Games\": view games\n\"Logout\": Log out of account\n\"Quit\": Exit the program\n\"join\": join a game\n\"Create\": Create a game\n\"Join observer\": Join a game as an observer");
                         break;
                     case "logout":
                         //perform logout function
@@ -106,10 +111,11 @@ public class Main {
                         try {
                             System.out.println("All games:");
                             HashSet<GameData> games = serverFacade.listGames();
-
+                            int incrementor = 0;
                             for (GameData game : games) {
-
-                                System.out.println("  " + game.gameID() + ": " + game.gameName() + ", black:" + game.blackUsername()+ ", white:" + game.whiteUsername());
+                                incrementor++;
+                                System.out.println("  " + incrementor + ": " + game.gameName() + ", black:" + game.blackUsername()+ ", white:" + game.whiteUsername());
+                                actualIDs.put(incrementor, game.gameID());
                             }
                             //for loop to cycle through all games and print out name of each with a number next to it
                         } catch (Exception e){
@@ -118,21 +124,34 @@ public class Main {
                         break;
                     case "join":
                         try {
+                            ChessGame.TeamColor teamColor = null;
                             System.out.println("Type game ID to join");
                             var gameID = scanner.nextInt();
-                            System.out.println("Type player color to join as (b = black, w = white, s = spectator)");
-                            var colorInput = scanner.next();
+                                System.out.println("Type player color to join as (b = black, w = white, s = spectator)");
+                                var colorInput = scanner.next();
+                                if (colorInput.equals("b")){
+                                     teamColor = ChessGame.TeamColor.BLACK;
+                                }
+                                else if (colorInput.equals("w")){
+                                     teamColor = ChessGame.TeamColor.WHITE;
+                                }
+                            int actualID = actualIDs.get(gameID);
+                            serverFacade.joinGame(actualID, teamColor);
+                            System.out.println("Game joined. Welcome bro.");
+                            isLoggedIn = false;
+                            isInGame = true;
+//                            currGame = serverFacade.getGame();
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "join observer":
+                        try {
                             ChessGame.TeamColor teamColor = null;
-                            if (colorInput.equals("b")){
-                                 teamColor = ChessGame.TeamColor.BLACK;
-                            }
-                            else if (colorInput.equals("w")){
-                                 teamColor = ChessGame.TeamColor.WHITE;
-                            }
-                            else if (colorInput.equals("s")){
-                                 teamColor = null;
-                                System.out.println("Game joined as spectator.");
-                            }
+                                System.out.println("Joining game as spectator.");
+                                teamColor = null;
+                            System.out.println("Type game ID to join");
+                            var gameID = scanner.nextInt();
                             serverFacade.joinGame(gameID, teamColor);
                             System.out.println("Game joined. Welcome bro.");
                             isLoggedIn = false;
@@ -239,13 +258,19 @@ public class Main {
 
         System.out.println("\n");
         //print header
-        int startRow = isWhitePOV ? 1 : 8;
-        int endRow = isWhitePOV ? 9 : 0;
-        int rowIncrement = isWhitePOV ? 1 : -1;
+        int startRow = isWhitePOV ? 8 : 1;
+        int endRow = isWhitePOV ? 0 : 9;
+        int rowIncrement = isWhitePOV ? -1 : 1;
 
         int startCol = isWhitePOV ? 0 : 9;
         int endCol = isWhitePOV ? 10 : -1;
         int colIncrement = isWhitePOV ? 1 : -1;
+
+        int startColRight = isWhitePOV ? 9 : 0;
+        int endColRight = isWhitePOV ? -1 : 10;
+        int colIncrementRight = isWhitePOV ? -1 : 1;
+
+
 
         for (int i = startCol; i != endCol; i+=colIncrement){
             System.out.print(black_on_grey + " " + header[i] + " ");
@@ -263,9 +288,9 @@ public class Main {
                 var tempPiece = board.getPiece(tempPos);
                 String letterToPrint = " ";
                 String foreGroundToPrint = "";
-                String backgroundToPrint = ANSI_BLACK_BACKGROUND;
+                String backgroundToPrint = ANSI_WHITE_BACKGROUND;
                 if ((row+col) % 2 == 0){
-                    backgroundToPrint = ANSI_WHITE_BACKGROUND;
+                    backgroundToPrint = ANSI_BLACK_BACKGROUND;
                 }
                 if (tempPiece != null) {
                     if (tempPiece.getPieceType() == ChessPiece.PieceType.PAWN) {
