@@ -9,7 +9,6 @@ public class WSClient extends Endpoint {
         var ws = new WSClient();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter a message you want to echo");
         while (true) {
             ws.send(scanner.nextLine());
         }
@@ -24,7 +23,6 @@ public class WSClient extends Endpoint {
 
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
-                System.out.println(message);
                 System.out.println(message);
             }
         });

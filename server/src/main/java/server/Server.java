@@ -1,14 +1,16 @@
 package server;
 
-import Exceptions.DataAccessException;
-import websocket.WebSocketHandler;
 import spark.*;
 
-import java.sql.SQLException;
+import org.eclipse.jetty.websocket.api.Session;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
     ServerHandlers serverHandlers;
     private final WebSocketHandler webSocketHandler;
+
+    static ConcurrentHashMap<Session, Integer> gameSessions = new ConcurrentHashMap<>();
 
     public Server() {
         serverHandlers = new ServerHandlers();
