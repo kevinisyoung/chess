@@ -5,6 +5,7 @@ import chess.ChessPosition;
 import model.GameData;
 import facade.ResponseException;
 import facade.ServerFacade;
+import websocket.WSClient;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         boolean isLoggedIn = false;
         boolean isInGame = false;
         String username = "";
@@ -21,12 +22,14 @@ public class Main {
         tempPhaseFiveBoard.resetBoard();
         HashMap<Integer, Integer> actualIDs = new HashMap<Integer, Integer>();
 
+        var ws = new WSClient();
+        Scanner scanner = new Scanner(System.in);
+
 
         while (true) {
             while (!isLoggedIn) {
                 System.out.println("\n\u001b[32mWelcome to chess. You are not logged in. Awaiting your input now, type \"help\" for possible commands.");
                 System.out.print("\n\u001b[39m[LOGGED_OUT] >>> ");
-                Scanner scanner = new Scanner(System.in);
                 String userInput = scanner.next();
                 userInput = userInput.toLowerCase();
 
@@ -55,6 +58,7 @@ public class Main {
                         try {
                             serverFacade.login(username, password);
                             isLoggedIn = true;
+                            scanner.nextLine();
                         } catch (Exception e){
                             System.out.println("Sorry, your username/password combination were incorrect.");
                         }
@@ -80,7 +84,6 @@ public class Main {
                 System.out.print("\u001b[39m");
                 System.out.println("\nWelcome, " + username + ". Thanks for coming to play, type \"help\" for help.");
                 System.out.print("\n\u001b[35m[LOGGED_IN--"+username+"] >>> ");
-                Scanner scanner = new Scanner(System.in);
                 String userInput = scanner.nextLine();
                 userInput = userInput.toLowerCase();
                 String responseOutput = "";
@@ -179,11 +182,16 @@ public class Main {
 
             }
             while (isInGame) {
+
                 System.out.println("\n\u001b[32m-*-*-*IN GAME*-*-*-");
                 System.out.print("\n\u001b[39m[IN_GAME] >>> ");
+
+                System.out.println("YOU'RE IN A WEBSOCKET.");
+                ws.send(scanner.nextLine());
+
                 printBoard(tempPhaseFiveBoard, true);
                 printBoard(tempPhaseFiveBoard, false);
-                Scanner scanner = new Scanner(System.in);
+                Scanner wscanner = new Scanner(System.in);
                 String userInput = scanner.next();
                 userInput = userInput.toLowerCase();
 
